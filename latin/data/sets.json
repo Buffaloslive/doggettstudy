@@ -62,11 +62,6 @@
           "en": "Writing table?",
           "la": "Tabula Scriptoria",
           "img": "images/tablet.png"
-        },
-        {
-          "en": "ZZTEST word",
-          "la": "ZZTEST-la",
-          "img": "images/zztestWord.png"
         }
       ]
     }

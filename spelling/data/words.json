@@ -1,13 +1,3 @@
 {
-  "sets": [
-    {
-      "name": "Set 1",
-      "words": [
-        {
-          "word": "zztest",
-          "audio": "audio/zztest.mp3"
-        }
-      ]
-    }
-  ]
+  "sets": []
 }
