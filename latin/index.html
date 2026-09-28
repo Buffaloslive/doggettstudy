@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Let's Learn Latin</title>
+<style>
+  :root {
+    --navy: #0b1f3a; --navy2: #0f2a4f; --field: #1c5f3e; --field2: #164a31;
+    --red: #c8102e; --gold: #f5b942; --white: #fdfaf2; --chalk: #c9d6e8;
+    --line: rgba(255,255,255,.14); --card: #fdfaf2; --ink: #16233a; --muted: #6b7688;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background:
+      radial-gradient(1200px 500px at 50% -10%, #123a63 0%, transparent 60%),
+      repeating-linear-gradient(135deg, rgba(255,255,255,.025) 0 2px, transparent 2px 26px),
+      linear-gradient(180deg, var(--navy) 0%, var(--navy2) 60%, #081627 100%);
+    color: var(--white);
+    font: 17px/1.4 -apple-system, "Segoe UI", system-ui, sans-serif;
+    display: flex; flex-direction: column; min-height: 100vh; padding: 16px;
+    position: relative; overflow-x: hidden;
+  }
+
+  header { text-align: center; margin: 6px 0 4px; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px; color: var(--gold);
+    font-weight: 800; font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+    background: rgba(245,185,66,.12); border: 1px solid rgba(245,185,66,.4);
+    padding: 5px 14px; border-radius: 999px; margin-bottom: 10px;
+  }
+  h1 {
+    font-size: clamp(28px, 8vw, 44px); margin: 0; font-weight: 900; letter-spacing: .01em;
+    text-transform: uppercase; color: var(--white);
+    text-shadow: 0 2px 0 var(--red), 0 4px 14px rgba(0,0,0,.45);
+  }
+  .stitches { width: 150px; height: 10px; margin: 10px auto 8px; }
+  .tagline {
+    color: var(--chalk); font-size: 15px; font-style: italic; font-weight: 600; margin-top: 2px;
+  }
+  .tagline b { color: var(--gold); font-style: normal; }
+
+  .controls { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 16px 0 10px; }
+  .toggle {
+    display: flex; background: rgba(255,255,255,.06); border: 1px solid var(--line); border-radius: 999px; padding: 3px;
+  }
+  .toggle button {
+    border: 0; background: transparent; color: var(--white); font: inherit; font-weight: 700;
+    padding: 9px 16px; border-radius: 999px; cursor: pointer; font-size: 13.5px; text-transform: uppercase; letter-spacing: .03em;
+  }
+  .toggle button.active { background: var(--red); color: #fff; box-shadow: 0 3px 10px rgba(200,16,46,.5); }
+  .setpick {
+    border: 1px solid var(--line); background: rgba(255,255,255,.06); color: var(--white); font: inherit; font-weight: 700;
+    font-size: 13.5px; padding: 9px 30px 9px 14px; border-radius: 999px; cursor: pointer; -webkit-appearance: none; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23fdfaf2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center;
+  }
+  .setpick option { color: #16233a; }
+  .iconbtn {
+    border: 1px solid var(--line); background: rgba(255,255,255,.06); color: var(--white); border-radius: 999px;
+    width: 44px; height: 44px; font-size: 19px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+  .iconbtn:active { transform: scale(0.92); }
+
+  main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
+
+  .scoreboard {
+    display: flex; align-items: center; gap: 10px; background: #06101f; border: 3px solid #223a5e;
+    border-radius: 10px; padding: 8px 16px; box-shadow: inset 0 2px 8px rgba(0,0,0,.6);
+  }
+  .scoreboard .lbl { font-size: 10px; letter-spacing: .12em; color: #6d8bb8; font-weight: 800; text-transform: uppercase; }
+  .scoreboard .num {
+    font: 800 26px/1 "Courier New", monospace; color: var(--gold); text-shadow: 0 0 8px rgba(245,185,66,.6);
+    min-width: 1.6ch; text-align: center;
+  }
+  .scoreboard .of { color: #6d8bb8; font-weight: 700; font-size: 15px; }
+
+  .stage { perspective: 1400px; width: min(90vw, 400px); }
+  .card {
+    position: relative; width: 100%; aspect-ratio: 3 / 4; cursor: pointer;
+    transform-style: preserve-3d; transition: transform 0.45s cubic-bezier(.2,.8,.2,1);
+  }
+  .card.flipped { transform: rotateY(180deg); }
+  .card.bounce { animation: bounce .5s ease; }
+  @keyframes bounce { 0%,100% { transform: scale(1); } 45% { transform: scale(1.045); } }
+  .face {
+    position: absolute; inset: 0; backface-visibility: hidden; border-radius: 18px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+    padding: 22px; box-shadow: 0 14px 34px rgba(0,0,0,.45);
+  }
+  .front {
+    background: var(--card); border: 3px dashed var(--red); position: relative;
+  }
+  .front::before {
+    content: "⚾"; position: absolute; top: 10px; right: 14px; font-size: 20px; opacity: .55;
+  }
+  .back {
+    background:
+      radial-gradient(120px 120px at 50% 18%, rgba(255,255,255,.08), transparent 60%),
+      linear-gradient(180deg, var(--field) 0%, var(--field2) 100%);
+    color: #fff; transform: rotateY(180deg); border: 3px solid #0e3d27;
+  }
+
+  .front img { width: 68%; max-width: 220px; object-fit: contain; filter: drop-shadow(0 2px 3px rgba(0,0,0,.15)); }
+  .front .word { font-size: 28px; font-weight: 800; text-align: center; color: var(--ink); }
+  .tapme {
+    position: absolute; bottom: 12px; color: var(--muted); font-size: 11.5px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .08em;
+  }
+
+  .la { font-size: 32px; font-weight: 900; text-align: center; line-height: 1.15; text-shadow: 0 2px 6px rgba(0,0,0,.35); }
+  .en { font-size: 17px; opacity: 0.92; text-align: center; font-weight: 600; }
+
+  nav.pager { display: flex; align-items: center; gap: 14px; }
+  nav.pager button {
+    border: 0; background: var(--red); color: #fff; font: inherit; font-weight: 800;
+    padding: 13px 24px; border-radius: 12px; cursor: pointer; font-size: 15px;
+    text-transform: uppercase; letter-spacing: .03em; box-shadow: 0 6px 0 #8c0b21, 0 8px 16px rgba(0,0,0,.35);
+  }
+  nav.pager button:active { transform: translateY(3px); box-shadow: 0 3px 0 #8c0b21; }
+  nav.pager button:disabled { opacity: 0.35; box-shadow: none; }
+  nav.pager button.ghost {
+    background: rgba(255,255,255,.06); color: var(--white); border: 1px solid var(--line); box-shadow: none;
+  }
+  nav.pager button.ghost:active { transform: translateY(1px); }
+
+  .stamp {
+    position: fixed; border: 3px solid var(--gold); color: var(--gold); font-weight: 900; font-size: 12px;
+    letter-spacing: .07em; padding: 7px 12px; border-radius: 8px; text-transform: uppercase;
+    background: rgba(0,0,0,.25); pointer-events: none; text-align: center; line-height: 1.3; z-index: 1;
+  }
+  .stamp.tl { left: 14px; top: 14px; transform: rotate(-7deg); }
+  .stamp.tr { right: 14px; top: 14px; transform: rotate(6deg); }
+  .stamp.bl { left: 14px; bottom: 14px; transform: rotate(8deg); }
+  .stamp.br { right: 14px; bottom: 14px; transform: rotate(-9deg); }
+  @media (max-width: 460px) {
+    .stamp { font-size: 9px; padding: 4px 7px; border-width: 2px; }
+    .stamp.tl, .stamp.tr { top: 6px; }
+    header { margin-top: 46px; }
+  }
+
+  footer { text-align: center; color: #7f8caa; font-size: 12px; margin: 18px 0 60px; }
+
+  .overlay {
+    position: fixed; inset: 0; background: rgba(4,10,20,.86); display: none;
+    align-items: center; justify-content: center; padding: 20px; z-index: 20;
+  }
+  .overlay.show { display: flex; }
+  .win {
+    background: linear-gradient(180deg, #123a63, #0b1f3a); border: 2px solid var(--gold);
+    border-radius: 20px; padding: 34px 26px; max-width: 380px; text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,.6);
+  }
+  .win .trophy { font-size: 54px; }
+  .win h2 {
+    color: var(--gold); text-transform: uppercase; font-size: 26px; margin: 8px 0 6px; font-weight: 900;
+    text-shadow: 0 2px 0 rgba(0,0,0,.4);
+  }
+  .win p { color: var(--chalk); font-size: 15px; margin: 6px 0; }
+  .win .work { color: #fff; font-weight: 900; letter-spacing: .06em; margin-top: 14px; font-size: 15px; }
+  .win button {
+    margin-top: 18px; border: 0; background: var(--red); color: #fff; font-weight: 800; font-size: 15px;
+    padding: 13px 26px; border-radius: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: .03em;
+    box-shadow: 0 6px 0 #8c0b21;
+  }
+  .win button:active { transform: translateY(3px); box-shadow: 0 3px 0 #8c0b21; }
+</style>
+</head>
+<body>
+<header>
+  <div class="eyebrow">⚾ 5th Grade Latin League</div>
+  <h1>Let's Learn Latin</h1>
+  <svg class="stitches" viewBox="0 0 150 10"><path d="M2 5 L148 5" stroke="#c8102e" stroke-width="2"/><g stroke="#c8102e" stroke-width="2"><path d="M10 1 L10 9 M22 1 L22 9 M34 1 L34 9 M46 1 L46 9 M58 1 L58 9 M70 1 L70 9 M82 1 L82 9 M94 1 L94 9 M106 1 L106 9 M118 1 L118 9 M130 1 L130 9 M142 1 L142 9"/></g></svg>
+  <div class="tagline">&ldquo;<b>A&rsquo;s</b> are made here.&rdquo;</div>
+</header>
+
+<div class="controls">
+  <div class="toggle" role="group" aria-label="Quiz direction">
+    <button id="modePic" class="active">Picture &rarr; Latin</button>
+    <button id="modeEn">English &rarr; Latin</button>
+  </div>
+  <button class="iconbtn" id="shuffleBtn" title="Mix up the lineup">&#128256;</button>
+  <button class="iconbtn" id="restartBtn" title="Back to card 1">&#8635;</button>
+  <select class="setpick" id="setSelect"></select>
+</div>
+
+<main>
+  <div class="scoreboard">
+    <span class="lbl">Card</span>
+    <span class="num" id="progNum">01</span>
+    <span class="of">of&nbsp;<span id="totalNum">12</span></span>
+  </div>
+  <div class="stage">
+    <div class="card" id="card">
+      <div class="face front" id="front">
+        <img id="frontIcon" alt="">
+        <div class="word" id="frontWord" style="display:none"></div>
+        <div class="tapme">Tap to swing</div>
+      </div>
+      <div class="face back">
+        <div class="la" id="backLa"></div>
+        <div class="en" id="backEn"></div>
+      </div>
+    </div>
+  </div>
+  <nav class="pager">
+    <button class="ghost" id="prevBtn">&larr; Back</button>
+    <button id="nextBtn">Next &rarr;</button>
+  </nav>
+</main>
+
+<footer>Tap the card to flip it &middot; use the &larr; &rarr; keys or space bar to move on</footer>
+<div class="stamp tl">No<br>shortcuts</div>
+<div class="stamp tr">Eyes on<br>the ball</div>
+<div class="stamp bl">Earn<br>it</div>
+<div class="stamp br">Put in<br>the work</div>
+
+<div class="overlay" id="winOverlay">
+  <div class="win">
+    <div class="trophy">🏆</div>
+    <h2>Lineup cleared!</h2>
+    <p>All 12 cards, done. That's how champs study.</p>
+    <p><i>&ldquo;A&rsquo;s are made here.&rdquo;</i></p>
+    <div class="work">💪 PUT IN THE WORK 💪</div>
+    <button id="playAgainBtn">Run it back</button>
+  </div>
+</div>
+
+<script>
+// ---- the cards, exactly as written on Will's list, grouped by weekly set.
+// Pictures are cropped straight from his own sheet (images/<name>.png) — to swap one out,
+// just replace that file with a same-named image and reload.
+// To add a new week: copy a whole { name: ..., cards: [...] } block and paste a new one below it.
+const SETS = [
+  { name: "Set 1", cards: [
+    { en: "Get up!",       la: "Surge!",           img: "images/getUp.png" },
+    { en: "Sit up!",       la: "Conside",          img: "images/sitUp.png" },
+    { en: "Walk",          la: "Ambula",           img: "images/walk.png" },
+    { en: "Run!",          la: "Curre!",           img: "images/run.png" },
+    { en: "Turn yourself", la: "Verte te",         img: "images/turn.png" },
+    { en: "Stop?",         la: "Consisté",    img: "images/stop.png" },
+    { en: "Quickly",       la: "Celeriter",        img: "images/fast.png" },
+    { en: "Slowly",        la: "Lente",            img: "images/slow.png" },
+    { en: "Desk",          la: "Mensa",            img: "images/desk.png" },
+    { en: "Door",          la: "Ostium",           img: "images/door.png" },
+    { en: "Window",        la: "Fenestra",         img: "images/window.png" },
+    { en: "Writing table?",la: "Tabula Scriptoria",img: "images/tablet.png" },
+  ]},
+];
+
+let CARDS = SETS[0].cards;
+let order = CARDS.map((_, i) => i);
+let pos = 0;
+let mode = "pic"; // "pic" or "en"
+
+const $ = (id) => document.getElementById(id);
+const card = $("card"), frontIcon = $("frontIcon"), frontWord = $("frontWord");
+const backLa = $("backLa"), backEn = $("backEn"), progNum = $("progNum"), totalNum = $("totalNum");
+const winOverlay = $("winOverlay"), setSelect = $("setSelect");
+
+SETS.forEach((s, i) => {
+  const opt = document.createElement("option");
+  opt.value = String(i);
+  opt.textContent = `${s.name} (${s.cards[0].en})`;
+  setSelect.appendChild(opt);
+});
+if (SETS.length > 1) {
+  const opt = document.createElement("option");
+  opt.value = "all";
+  opt.textContent = "All Sets (Final Exam)";
+  setSelect.appendChild(opt);
+}
+
+function loadSet(value) {
+  CARDS = value === "all" ? SETS.flatMap((s) => s.cards) : SETS[Number(value)].cards;
+  order = CARDS.map((_, i) => i);
+  pos = 0;
+  totalNum.textContent = String(CARDS.length);
+  render();
+  winOverlay.classList.remove("show");
+}
+setSelect.addEventListener("change", () => loadSet(setSelect.value));
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+function render() {
+  card.classList.remove("flipped");
+  const c = CARDS[order[pos]];
+  if (mode === "pic") {
+    frontIcon.style.display = ""; frontIcon.src = c.img;
+    frontWord.style.display = "none";
+  } else {
+    frontIcon.style.display = "none";
+    frontWord.style.display = ""; frontWord.textContent = c.en;
+  }
+  backLa.textContent = c.la;
+  backEn.textContent = "(" + c.en + ")";
+  progNum.textContent = String(pos + 1).padStart(2, "0");
+  $("prevBtn").disabled = pos === 0;
+}
+
+function flip() {
+  card.classList.toggle("flipped");
+  card.classList.remove("bounce"); void card.offsetWidth; card.classList.add("bounce");
+}
+function next() {
+  if (pos < CARDS.length - 1) { pos++; render(); }
+  else { winOverlay.classList.add("show"); }
+}
+function prev() { if (pos > 0) { pos--; render(); } }
+function restart() { order = CARDS.map((_, i) => i); pos = 0; render(); winOverlay.classList.remove("show"); }
+
+card.addEventListener("click", flip);
+$("nextBtn").addEventListener("click", next);
+$("prevBtn").addEventListener("click", prev);
+$("shuffleBtn").addEventListener("click", () => { shuffle(order); pos = 0; render(); });
+$("restartBtn").addEventListener("click", restart);
+$("playAgainBtn").addEventListener("click", () => { shuffle(order); restart(); });
+
+$("modePic").addEventListener("click", () => {
+  mode = "pic"; $("modePic").classList.add("active"); $("modeEn").classList.remove("active");
+  render();
+});
+$("modeEn").addEventListener("click", () => {
+  mode = "en"; $("modeEn").classList.add("active"); $("modePic").classList.remove("active");
+  render();
+});
+
+document.addEventListener("keydown", (e) => {
+  if (winOverlay.classList.contains("show")) return;
+  if (e.code === "Space" || e.code === "Enter") { e.preventDefault(); flip(); }
+  else if (e.code === "ArrowRight") next();
+  else if (e.code === "ArrowLeft") prev();
+});
+
+render();
+</script>
+</body>
+</html>
