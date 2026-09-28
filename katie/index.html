@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Katie — Doggett Study</title>
+<style>
+  :root { --pink: #ff8fab; --lav: #b8a4e3; --bg1: #fde2e4; --bg2: #d9f0ea; --bg3: #e8def8; --ink: #4a3b52; --muted: #8a6a92; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background:
+      radial-gradient(900px 400px at 15% -5%, rgba(255,179,198,.55) 0%, transparent 60%),
+      radial-gradient(900px 400px at 85% 110%, rgba(184,164,227,.5) 0%, transparent 60%),
+      linear-gradient(180deg, var(--bg1) 0%, var(--bg3) 55%, var(--bg2) 100%);
+    color: var(--ink); font: 17px/1.4 -apple-system, "Segoe UI", system-ui, sans-serif;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100vh; padding: 24px; text-align: center;
+  }
+  a.back { position: absolute; top: 18px; left: 18px; color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 700; }
+  h1 { font-size: clamp(28px, 8vw, 44px); margin: 0 0 6px; font-weight: 900; color: #7a4a6b;
+    text-shadow: 0 2px 0 rgba(255,255,255,.7); }
+  .tagline { color: var(--muted); font-weight: 600; margin-bottom: 34px; }
+  .cards { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; }
+  a.pick {
+    display: block; width: 220px; padding: 28px 18px; border-radius: 16px; text-decoration: none; color: #fff;
+    background: linear-gradient(180deg, #ffb3c6, var(--pink)); box-shadow: 0 6px 0 #d9718f;
+    font-weight: 800; letter-spacing: .03em; transition: transform .15s; font-size: 20px;
+  }
+  a.pick:active { transform: translateY(3px); box-shadow: 0 3px 0 #d9718f; }
+  a.pick .emoji { font-size: 34px; display: block; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+  <a class="back" href="/">&larr; Back</a>
+  <h1>Katie</h1>
+  <div class="tagline">You've got this!</div>
+  <div class="cards">
+    <a class="pick" href="/katie/spelling/"><span class="emoji">🏆</span>Spelling</a>
+  </div>
+<script src="/gate.js"></script>
+</body>
+</html>

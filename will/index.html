@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>Doggett Study</title>
+<title>Will — Doggett Study</title>
 <style>
   :root { --navy: #0b1f3a; --navy2: #0f2a4f; --red: #c8102e; --gold: #f5b942; --white: #fdfaf2; --chalk: #c9d6e8; }
   * { box-sizing: border-box; }
@@ -14,6 +14,7 @@
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     min-height: 100vh; padding: 24px; text-align: center;
   }
+  a.back { position: absolute; top: 18px; left: 18px; color: var(--chalk); text-decoration: none; font-size: 14px; font-weight: 700; }
   h1 { font-size: clamp(28px, 8vw, 44px); margin: 0 0 6px; font-weight: 900; text-transform: uppercase;
     text-shadow: 0 2px 0 var(--red), 0 4px 14px rgba(0,0,0,.45); }
   .tagline { color: var(--chalk); font-style: italic; margin-bottom: 34px; }
@@ -26,15 +27,14 @@
   }
   a.pick:active { transform: scale(.96); }
   a.pick .emoji { font-size: 34px; display: block; margin-bottom: 10px; }
-  a.pick.katie { background: rgba(255,143,171,.14); border-color: rgba(255,143,171,.35); }
 </style>
 </head>
 <body>
-  <h1>Doggett Study</h1>
+  <a class="back" href="/">&larr; Back</a>
+  <h1>Will</h1>
   <div class="tagline">&ldquo;A&rsquo;s are made here.&rdquo;</div>
   <div class="cards">
-    <a class="pick" href="/will/"><span class="emoji">⚾</span>Will</a>
-    <a class="pick katie" href="/katie/"><span class="emoji">🩰</span>Katie</a>
+    <a class="pick" href="/will/latin/"><span class="emoji">⚾</span>Latin</a>
   </div>
 <script src="/gate.js"></script>
 </body>

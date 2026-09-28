@@ -50,13 +50,26 @@
     padding: 9px 16px; border-radius: 999px; cursor: pointer; font-size: 13.5px; text-transform: uppercase; letter-spacing: .03em;
   }
   .toggle button.active { background: var(--red); color: #fff; box-shadow: 0 3px 10px rgba(200,16,46,.5); }
-  .setpick {
-    border: 1px solid var(--line); background: rgba(255,255,255,.06); color: var(--white); font: inherit; font-weight: 700;
-    font-size: 13.5px; padding: 9px 30px 9px 14px; border-radius: 999px; cursor: pointer; -webkit-appearance: none; appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23fdfaf2'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: right 14px center;
+  .layout { display: flex; flex: 1; align-items: stretch; }
+  .sidebar {
+    width: 210px; flex-shrink: 0; padding: 20px 14px; display: flex; flex-direction: column; gap: 8px;
+    border-right: 1px solid var(--line);
   }
-  .setpick option { color: #16233a; }
+  .sidebar h2 { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #6d8bb8; margin: 0 0 4px; }
+  .setbtn {
+    text-align: left; border: 1px solid var(--line); background: rgba(255,255,255,.05); color: var(--white);
+    font: inherit; font-weight: 700; font-size: 13px; padding: 10px 12px; border-radius: 10px; cursor: pointer;
+  }
+  .setbtn.active { background: var(--red); border-color: var(--red); box-shadow: 0 3px 10px rgba(200,16,46,.4); }
+  .setbtn.mash { background: rgba(245,185,66,.1); border-color: rgba(245,185,66,.4); color: var(--gold); }
+  .setbtn.mash.active { background: var(--gold); color: #16233a; border-color: var(--gold); }
+  .content { flex: 1; position: relative; display: flex; flex-direction: column; align-items: center; padding: 0 16px; min-width: 0; }
+  @media (max-width: 760px) {
+    .layout { flex-direction: column; }
+    .sidebar { width: auto; flex-direction: row; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+    .sidebar h2 { display: none; }
+    .setbtn { flex-shrink: 0; white-space: nowrap; }
+  }
   .iconbtn {
     border: 1px solid var(--line); background: rgba(255,255,255,.06); color: var(--white); border-radius: 999px;
     width: 44px; height: 44px; font-size: 19px; cursor: pointer; display: flex; align-items: center; justify-content: center;
@@ -126,7 +139,7 @@
   nav.pager button.ghost:active { transform: translateY(1px); }
 
   .stamp {
-    position: fixed; border: 3px solid var(--gold); color: var(--gold); font-weight: 900; font-size: 12px;
+    position: absolute; border: 3px solid var(--gold); color: var(--gold); font-weight: 900; font-size: 12px;
     letter-spacing: .07em; padding: 7px 12px; border-radius: 8px; text-transform: uppercase;
     background: rgba(0,0,0,.25); pointer-events: none; text-align: center; line-height: 1.3; z-index: 1;
   }
@@ -168,53 +181,59 @@
 </style>
 </head>
 <body>
-<header>
-  <div class="eyebrow">⚾ 5th Grade Latin League</div>
-  <h1>Let's Learn Latin</h1>
-  <svg class="stitches" viewBox="0 0 150 10"><path d="M2 5 L148 5" stroke="#c8102e" stroke-width="2"/><g stroke="#c8102e" stroke-width="2"><path d="M10 1 L10 9 M22 1 L22 9 M34 1 L34 9 M46 1 L46 9 M58 1 L58 9 M70 1 L70 9 M82 1 L82 9 M94 1 L94 9 M106 1 L106 9 M118 1 L118 9 M130 1 L130 9 M142 1 L142 9"/></g></svg>
-  <div class="tagline">&ldquo;<b>A&rsquo;s</b> are made here.&rdquo;</div>
-</header>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <h2>Sets</h2>
+  </aside>
+  <div class="content">
+    <header>
+      <div class="eyebrow">⚾ 5th Grade Latin League</div>
+      <h1>Let's Learn Latin</h1>
+      <svg class="stitches" viewBox="0 0 150 10"><path d="M2 5 L148 5" stroke="#c8102e" stroke-width="2"/><g stroke="#c8102e" stroke-width="2"><path d="M10 1 L10 9 M22 1 L22 9 M34 1 L34 9 M46 1 L46 9 M58 1 L58 9 M70 1 L70 9 M82 1 L82 9 M94 1 L94 9 M106 1 L106 9 M118 1 L118 9 M130 1 L130 9 M142 1 L142 9"/></g></svg>
+      <div class="tagline">&ldquo;<b>A&rsquo;s</b> are made here.&rdquo;</div>
+    </header>
 
-<div class="controls">
-  <div class="toggle" role="group" aria-label="Quiz direction">
-    <button id="modePic" class="active">Picture &rarr; Latin</button>
-    <button id="modeEn">English &rarr; Latin</button>
-  </div>
-  <button class="iconbtn" id="shuffleBtn" title="Mix up the lineup">&#128256;</button>
-  <button class="iconbtn" id="restartBtn" title="Back to card 1">&#8635;</button>
-  <select class="setpick" id="setSelect"></select>
-</div>
-
-<main>
-  <div class="scoreboard">
-    <span class="lbl">Card</span>
-    <span class="num" id="progNum">01</span>
-    <span class="of">of&nbsp;<span id="totalNum">12</span></span>
-  </div>
-  <div class="stage">
-    <div class="card" id="card">
-      <div class="face front" id="front">
-        <img id="frontIcon" alt="">
-        <div class="word" id="frontWord" style="display:none"></div>
-        <div class="tapme">Tap to swing</div>
+    <div class="controls">
+      <div class="toggle" role="group" aria-label="Quiz direction">
+        <button id="modePic" class="active">Picture &rarr; Latin</button>
+        <button id="modeEn">English &rarr; Latin</button>
       </div>
-      <div class="face back">
-        <div class="la" id="backLa"></div>
-        <div class="en" id="backEn"></div>
-      </div>
+      <button class="iconbtn" id="shuffleBtn" title="Mix up the lineup">&#128256;</button>
+      <button class="iconbtn" id="restartBtn" title="Back to card 1">&#8635;</button>
     </div>
-  </div>
-  <nav class="pager">
-    <button class="ghost" id="prevBtn">&larr; Back</button>
-    <button id="nextBtn">Next &rarr;</button>
-  </nav>
-</main>
 
-<footer>Tap the card to flip it &middot; use the &larr; &rarr; keys or space bar to move on</footer>
-<div class="stamp tl">No<br>shortcuts</div>
-<div class="stamp tr">Eyes on<br>the ball</div>
-<div class="stamp bl">Earn<br>it</div>
-<div class="stamp br">Put in<br>the work</div>
+    <main>
+      <div class="scoreboard">
+        <span class="lbl">Card</span>
+        <span class="num" id="progNum">01</span>
+        <span class="of">of&nbsp;<span id="totalNum">12</span></span>
+      </div>
+      <div class="stage">
+        <div class="card" id="card">
+          <div class="face front" id="front">
+            <img id="frontIcon" alt="">
+            <div class="word" id="frontWord" style="display:none"></div>
+            <div class="tapme">Tap to swing</div>
+          </div>
+          <div class="face back">
+            <div class="la" id="backLa"></div>
+            <div class="en" id="backEn"></div>
+          </div>
+        </div>
+      </div>
+      <nav class="pager">
+        <button class="ghost" id="prevBtn">&larr; Back</button>
+        <button id="nextBtn">Next &rarr;</button>
+      </nav>
+    </main>
+
+    <footer>Tap the card to flip it &middot; use the &larr; &rarr; keys or space bar to move on</footer>
+    <div class="stamp tl">No<br>shortcuts</div>
+    <div class="stamp tr">Eyes on<br>the ball</div>
+    <div class="stamp bl">Earn<br>it</div>
+    <div class="stamp br">Put in<br>the work</div>
+  </div>
+</div>
 
 <div class="overlay" id="winOverlay">
   <div class="win">
@@ -239,7 +258,8 @@ let mode = "pic"; // "pic" or "en"
 const $ = (id) => document.getElementById(id);
 const card = $("card"), frontIcon = $("frontIcon"), frontWord = $("frontWord");
 const backLa = $("backLa"), backEn = $("backEn"), progNum = $("progNum"), totalNum = $("totalNum");
-const winOverlay = $("winOverlay"), setSelect = $("setSelect");
+const winOverlay = $("winOverlay"), sidebar = $("sidebar");
+let currentSetValue = "0";
 
 async function boot() {
   const res = await fetch("data/sets.json?v=" + Date.now());
@@ -248,29 +268,36 @@ async function boot() {
   if (!SETS.length) return;
 
   SETS.forEach((s, i) => {
-    const opt = document.createElement("option");
-    opt.value = String(i);
-    opt.textContent = `${s.name} (${s.cards[0].en})`;
-    setSelect.appendChild(opt);
+    const btn = document.createElement("button");
+    btn.className = "setbtn";
+    btn.dataset.value = String(i);
+    btn.textContent = `${s.name} (${s.cards[0].en})`;
+    sidebar.appendChild(btn);
   });
   if (SETS.length > 1) {
-    const opt = document.createElement("option");
-    opt.value = "all";
-    opt.textContent = "All Sets (Final Exam)";
-    setSelect.appendChild(opt);
+    const btn = document.createElement("button");
+    btn.className = "setbtn mash";
+    btn.dataset.value = "all";
+    btn.textContent = "🏆 All Sets (Final Exam)";
+    sidebar.appendChild(btn);
   }
+  sidebar.addEventListener("click", (e) => {
+    const btn = e.target.closest(".setbtn");
+    if (btn) loadSet(btn.dataset.value);
+  });
   loadSet("0");
 }
 
 function loadSet(value) {
+  currentSetValue = value;
   CARDS = value === "all" ? SETS.flatMap((s) => s.cards) : SETS[Number(value)].cards;
   order = CARDS.map((_, i) => i);
   pos = 0;
   totalNum.textContent = String(CARDS.length);
+  sidebar.querySelectorAll(".setbtn").forEach((b) => b.classList.toggle("active", b.dataset.value === value));
   render();
   winOverlay.classList.remove("show");
 }
-setSelect.addEventListener("change", () => loadSet(setSelect.value));
 
 function shuffle(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
@@ -331,6 +358,6 @@ document.addEventListener("keydown", (e) => {
 
 boot();
 </script>
-<script src="../gate.js"></script>
+<script src="/gate.js"></script>
 </body>
 </html>

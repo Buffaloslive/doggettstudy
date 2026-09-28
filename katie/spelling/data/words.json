@@ -1,0 +1,13 @@
+{
+  "sets": [
+    {
+      "name": "Set 1",
+      "words": [
+        {
+          "word": "friend",
+          "audio": "audio/friend.mp3"
+        }
+      ]
+    }
+  ]
+}
