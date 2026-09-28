@@ -6,6 +6,10 @@
         {
           "word": "friend",
           "audio": "audio/friend.mp3"
+        },
+        {
+          "word": "jungle",
+          "audio": "audio/jungle.mp3"
         }
       ]
     }
