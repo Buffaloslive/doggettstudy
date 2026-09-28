@@ -1,0 +1,74 @@
+{
+  "sets": [
+    {
+      "name": "Set 1",
+      "cards": [
+        {
+          "en": "Get up!",
+          "la": "Surge!",
+          "img": "images/getUp.png"
+        },
+        {
+          "en": "Sit up!",
+          "la": "Conside",
+          "img": "images/sitUp.png"
+        },
+        {
+          "en": "Walk",
+          "la": "Ambula",
+          "img": "images/walk.png"
+        },
+        {
+          "en": "Run!",
+          "la": "Curre!",
+          "img": "images/run.png"
+        },
+        {
+          "en": "Turn yourself",
+          "la": "Verte te",
+          "img": "images/turn.png"
+        },
+        {
+          "en": "Stop?",
+          "la": "Consisté",
+          "img": "images/stop.png"
+        },
+        {
+          "en": "Quickly",
+          "la": "Celeriter",
+          "img": "images/fast.png"
+        },
+        {
+          "en": "Slowly",
+          "la": "Lente",
+          "img": "images/slow.png"
+        },
+        {
+          "en": "Desk",
+          "la": "Mensa",
+          "img": "images/desk.png"
+        },
+        {
+          "en": "Door",
+          "la": "Ostium",
+          "img": "images/door.png"
+        },
+        {
+          "en": "Window",
+          "la": "Fenestra",
+          "img": "images/window.png"
+        },
+        {
+          "en": "Writing table?",
+          "la": "Tabula Scriptoria",
+          "img": "images/tablet.png"
+        },
+        {
+          "en": "ZZTEST word",
+          "la": "ZZTEST-la",
+          "img": "images/zztestWord.png"
+        }
+      ]
+    }
+  ]
+}

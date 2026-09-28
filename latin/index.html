@@ -228,29 +228,11 @@
 </div>
 
 <script>
-// ---- the cards, exactly as written on Will's list, grouped by weekly set.
-// Pictures are cropped straight from his own sheet (images/<name>.png) — to swap one out,
-// just replace that file with a same-named image and reload.
-// To add a new week: copy a whole { name: ..., cards: [...] } block and paste a new one below it.
-const SETS = [
-  { name: "Set 1", cards: [
-    { en: "Get up!",       la: "Surge!",           img: "images/getUp.png" },
-    { en: "Sit up!",       la: "Conside",          img: "images/sitUp.png" },
-    { en: "Walk",          la: "Ambula",           img: "images/walk.png" },
-    { en: "Run!",          la: "Curre!",           img: "images/run.png" },
-    { en: "Turn yourself", la: "Verte te",         img: "images/turn.png" },
-    { en: "Stop?",         la: "Consisté",    img: "images/stop.png" },
-    { en: "Quickly",       la: "Celeriter",        img: "images/fast.png" },
-    { en: "Slowly",        la: "Lente",            img: "images/slow.png" },
-    { en: "Desk",          la: "Mensa",            img: "images/desk.png" },
-    { en: "Door",          la: "Ostium",           img: "images/door.png" },
-    { en: "Window",        la: "Fenestra",         img: "images/window.png" },
-    { en: "Writing table?",la: "Tabula Scriptoria",img: "images/tablet.png" },
-  ]},
-];
-
-let CARDS = SETS[0].cards;
-let order = CARDS.map((_, i) => i);
+// ---- Cards live in data/sets.json, not here, so the local admin tool (and William)
+// can add new weekly sets without touching this file. See ../ADMIN.md for how.
+let SETS = [];
+let CARDS = [];
+let order = [];
 let pos = 0;
 let mode = "pic"; // "pic" or "en"
 
@@ -259,17 +241,25 @@ const card = $("card"), frontIcon = $("frontIcon"), frontWord = $("frontWord");
 const backLa = $("backLa"), backEn = $("backEn"), progNum = $("progNum"), totalNum = $("totalNum");
 const winOverlay = $("winOverlay"), setSelect = $("setSelect");
 
-SETS.forEach((s, i) => {
-  const opt = document.createElement("option");
-  opt.value = String(i);
-  opt.textContent = `${s.name} (${s.cards[0].en})`;
-  setSelect.appendChild(opt);
-});
-if (SETS.length > 1) {
-  const opt = document.createElement("option");
-  opt.value = "all";
-  opt.textContent = "All Sets (Final Exam)";
-  setSelect.appendChild(opt);
+async function boot() {
+  const res = await fetch("data/sets.json?v=" + Date.now());
+  const data = await res.json();
+  SETS = data.sets || [];
+  if (!SETS.length) return;
+
+  SETS.forEach((s, i) => {
+    const opt = document.createElement("option");
+    opt.value = String(i);
+    opt.textContent = `${s.name} (${s.cards[0].en})`;
+    setSelect.appendChild(opt);
+  });
+  if (SETS.length > 1) {
+    const opt = document.createElement("option");
+    opt.value = "all";
+    opt.textContent = "All Sets (Final Exam)";
+    setSelect.appendChild(opt);
+  }
+  loadSet("0");
 }
 
 function loadSet(value) {
@@ -339,7 +329,7 @@ document.addEventListener("keydown", (e) => {
   else if (e.code === "ArrowLeft") prev();
 });
 
-render();
+boot();
 </script>
 </body>
 </html>
