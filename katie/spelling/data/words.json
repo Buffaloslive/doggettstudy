@@ -50,6 +50,10 @@
         {
           "word": "skipping",
           "audio": "audio/skipping.mp3"
+        },
+        {
+          "word": "flagged",
+          "audio": "audio/flagged.mp3"
         }
       ]
     }
