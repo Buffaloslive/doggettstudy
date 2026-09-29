@@ -18,6 +18,10 @@
         {
           "word": "runner",
           "audio": "audio/runner.mp3"
+        },
+        {
+          "word": "starry",
+          "audio": "audio/starry.mp3"
         }
       ]
     }
