@@ -26,6 +26,10 @@
         {
           "word": "patted",
           "audio": "audio/patted.mp3"
+        },
+        {
+          "word": "reddish",
+          "audio": "audio/reddish.mp3"
         }
       ]
     }
