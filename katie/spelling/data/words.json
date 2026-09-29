@@ -30,6 +30,10 @@
         {
           "word": "reddish",
           "audio": "audio/reddish.mp3"
+        },
+        {
+          "word": "should",
+          "audio": "audio/should.mp3"
         }
       ]
     }
