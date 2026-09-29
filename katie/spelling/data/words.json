@@ -1,3 +1,13 @@
 {
-  "sets": []
+  "sets": [
+    {
+      "name": "Set 1",
+      "words": [
+        {
+          "word": "swimming",
+          "audio": "audio/swimming.mp3"
+        }
+      ]
+    }
+  ]
 }
