@@ -46,6 +46,10 @@
         {
           "word": "clapping",
           "audio": "audio/clapping.mp3"
+        },
+        {
+          "word": "skipping",
+          "audio": "audio/skipping.mp3"
         }
       ]
     }
