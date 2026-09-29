@@ -38,6 +38,10 @@
         {
           "word": "they",
           "audio": "audio/they.mp3"
+        },
+        {
+          "word": "you're",
+          "audio": "audio/youRe.mp3"
         }
       ]
     }
