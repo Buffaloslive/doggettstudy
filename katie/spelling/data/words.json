@@ -42,6 +42,10 @@
         {
           "word": "you're",
           "audio": "audio/youRe.mp3"
+        },
+        {
+          "word": "clapping",
+          "audio": "audio/clapping.mp3"
         }
       ]
     }
