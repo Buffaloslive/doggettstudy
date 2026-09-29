@@ -34,6 +34,10 @@
         {
           "word": "should",
           "audio": "audio/should.mp3"
+        },
+        {
+          "word": "they",
+          "audio": "audio/they.mp3"
         }
       ]
     }
