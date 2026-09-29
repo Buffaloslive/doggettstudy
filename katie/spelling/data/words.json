@@ -6,6 +6,10 @@
         {
           "word": "swimming",
           "audio": "audio/swimming.mp3"
+        },
+        {
+          "word": "grabbing",
+          "audio": "audio/grabbing.mp3"
         }
       ]
     }
