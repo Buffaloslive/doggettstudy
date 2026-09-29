@@ -22,6 +22,10 @@
         {
           "word": "starry",
           "audio": "audio/starry.mp3"
+        },
+        {
+          "word": "patted",
+          "audio": "audio/patted.mp3"
         }
       ]
     }
