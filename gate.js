@@ -3,8 +3,8 @@
 // password, but it's still just a hash check in the browser). Remembers the device once
 // unlocked (localStorage), so Will/Katie don't retype it every visit.
 (function () {
-  var HASH = "d973ddf";
-  var KEY = "doggettstudy_unlocked";
+  var HASH = "7e920a83";
+  var KEY = "doggettstudy_unlocked_v2";   // bumped with each password change so every device must re-enter it
   if (localStorage.getItem(KEY) === "1") return;
 
   // Plain djb2 hash, not cryptographic — works on http and https alike (unlike
