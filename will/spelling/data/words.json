@@ -5,91 +5,170 @@
       "words": [
         {
           "word": "Affection",
-          "def": "A feeling of love."
+          "def": "A feeling of love.",
+          "family": "affection",
+          "sentence": "The puppy showed its ___ by licking my face."
         },
         {
           "word": "Affectionate",
-          "def": "Showing love and care."
+          "def": "Showing love and care.",
+          "family": "affection",
+          "sentence": "My grandma is very ___ and always gives the biggest hugs.",
+          "avoid": [
+            "Eloquent"
+          ]
         },
         {
           "word": "Appeal",
-          "def": "A serious request; attract interest."
+          "def": "A serious request; attract interest.",
+          "family": "appeal",
+          "sentence": "Pizza for lunch has a lot of ___ for most kids.",
+          "avoid": [
+            "Affection"
+          ]
         },
         {
           "word": "Clasp",
-          "def": "Hold tightly; a fastener."
+          "def": "Hold tightly; a fastener.",
+          "family": "clasp",
+          "sentence": "Grab the rope and ___ it tightly with both hands."
         },
         {
           "word": "Conspicuous",
-          "def": "Easy to see or notice."
+          "def": "Easy to see or notice.",
+          "family": "conspicuous",
+          "sentence": "His bright orange hat made him ___ in the crowd.",
+          "avoid": [
+            "Affectionate",
+            "Lofty"
+          ]
         },
         {
           "word": "Contribute",
-          "def": "Give or help bring about."
+          "def": "Give or help bring about.",
+          "family": "contribute",
+          "sentence": "Everyone in class will ___ one can of food to the food drive."
         },
         {
           "word": "Contribution",
-          "def": "Something given to help."
+          "def": "Something given to help.",
+          "family": "contribute",
+          "sentence": "Her ___ to the bake sale was a plate of cookies."
         },
         {
           "word": "Contributor",
-          "def": "Someone who gives or helps."
+          "def": "Someone who gives or helps.",
+          "family": "contribute",
+          "sentence": "Mr. Lee gave $500, so he was the biggest ___ to the school fundraiser."
         },
         {
           "word": "Declare",
-          "def": "Say openly and clearly."
+          "def": "Say openly and clearly.",
+          "family": "declare",
+          "sentence": "The umpire will ___ the runner safe or out."
         },
         {
           "word": "Declaration",
-          "def": "A public or official statement."
+          "def": "A public or official statement.",
+          "family": "declare",
+          "sentence": "The ___ of Independence was signed in 1776."
         },
         {
           "word": "Eloquent",
-          "def": "Speaking or writing with power."
+          "def": "Speaking or writing with power.",
+          "family": "eloquent",
+          "sentence": "The ___ speaker made the whole crowd stand up and cheer.",
+          "avoid": [
+            "Affectionate",
+            "Lofty"
+          ]
         },
         {
           "word": "Eloquence",
-          "def": "Powerful speaking or writing."
+          "def": "Powerful speaking or writing.",
+          "family": "eloquent",
+          "sentence": "She spoke with such ___ that the whole room clapped.",
+          "avoid": [
+            "Affection"
+          ]
         },
         {
           "word": "Exhibit",
-          "def": "Show publicly; a public display."
+          "def": "Show publicly; a public display.",
+          "family": "exhibit",
+          "sentence": "The museum will ___ the dinosaur bones in a glass case.",
+          "avoid": [
+            "Unveil"
+          ]
         },
         {
           "word": "Exhibition",
-          "def": "A large public show."
+          "def": "A large public show.",
+          "family": "exhibit",
+          "sentence": "We walked through a huge art ___ with hundreds of paintings."
         },
         {
           "word": "Ferry",
-          "def": "Carry across water by boat."
+          "def": "Carry across water by boat.",
+          "family": "ferry",
+          "sentence": "A big boat will ___ the cars across the lake."
         },
         {
           "word": "Immigrant",
-          "def": "Someone settling in another country."
+          "def": "Someone settling in another country.",
+          "family": "immigrant",
+          "sentence": "My great-grandpa came to America from Italy as a young ___.",
+          "avoid": [
+            "Contributor"
+          ]
         },
         {
           "word": "Lofty",
-          "def": "Very high; noble; acting superior."
+          "def": "Very high; noble; acting superior.",
+          "family": "lofty",
+          "sentence": "The eagle built its nest on a ___ cliff high above the river.",
+          "avoid": [
+            "Conspicuous"
+          ]
         },
         {
           "word": "Pedestal",
-          "def": "A base supporting something."
+          "def": "A base supporting something.",
+          "family": "pedestal",
+          "sentence": "The trophy sat on a ___ so everyone could see it."
         },
         {
           "word": "Persecute",
-          "def": "Treat cruelly because of differences."
+          "def": "Treat cruelly because of differences.",
+          "family": "persecute",
+          "sentence": "It is wrong to ___ people just because they are different."
         },
         {
           "word": "Persecution",
-          "def": "Cruel treatment because of differences."
+          "def": "Cruel treatment because of differences.",
+          "family": "persecute",
+          "sentence": "The Pilgrims sailed to America to escape ___ for their beliefs.",
+          "avoid": [
+            "Poverty"
+          ]
         },
         {
           "word": "Poverty",
-          "def": "The condition of being poor."
+          "def": "The condition of being poor.",
+          "family": "poverty",
+          "sentence": "Families living in ___ often do not have enough money for food.",
+          "avoid": [
+            "Persecution"
+          ]
         },
         {
           "word": "Unveil",
-          "def": "Uncover or reveal something new."
+          "def": "Uncover or reveal something new.",
+          "family": "unveil",
+          "sentence": "The workers pulled off the big sheet to ___ the new statue.",
+          "avoid": [
+            "Exhibit"
+          ]
         }
       ]
     }

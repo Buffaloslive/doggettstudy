@@ -60,6 +60,19 @@
   .tagline { color: var(--chalk); font-size: 15px; font-style: italic; font-weight: 600; margin-top: 8px; }
   .tagline b { color: var(--gold); font-style: normal; }
 
+  .toggle {
+    display: flex; background: rgba(255,255,255,.06); border: 1px solid var(--line); border-radius: 999px; padding: 3px; margin-top: 16px;
+  }
+  .toggle button {
+    border: 0; background: transparent; color: var(--white); font: inherit; font-weight: 700;
+    padding: 9px 18px; border-radius: 999px; cursor: pointer; font-size: 13.5px; text-transform: uppercase; letter-spacing: .03em;
+  }
+  .toggle button.active { background: var(--red); color: #fff; box-shadow: 0 3px 10px rgba(200,16,46,.5); }
+  .wordcard .sentence { font-size: clamp(20px, 5.5vw, 25px); font-weight: 700; line-height: 1.45; margin-top: 8px; }
+  .wordcard .blank {
+    display: inline-block; min-width: 4.5em; border-bottom: 3px solid var(--red); color: var(--field); font-weight: 900;
+    text-align: center; padding: 0 4px;
+  }
   .boards { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin: 16px 0 14px; }
   .scoreboard {
     display: flex; align-items: center; gap: 10px; background: #06101f; border: 3px solid #223a5e;
@@ -150,6 +163,11 @@
       <div class="tagline">&ldquo;<b>A&rsquo;s</b> are made here.&rdquo;</div>
     </header>
 
+    <div class="toggle" role="group" aria-label="Quiz type">
+      <button id="modeDef" class="active">Meanings</button>
+      <button id="modeSent">Sentences</button>
+    </div>
+
     <div class="boards" id="boards">
       <div class="scoreboard"><span class="lbl">Word</span><span class="num" id="progNum">01</span><span class="of">of&nbsp;<span id="totalNum">0</span></span></div>
       <div class="scoreboard"><span class="lbl">First try</span><span class="num" id="hitNum">0</span></div>
@@ -157,8 +175,9 @@
 
     <div class="quiz" id="quiz">
       <div class="wordcard" id="wordcard">
-        <div class="ask">What does this word mean?</div>
+        <div class="ask" id="ask">What does this word mean?</div>
         <div class="word" id="word"></div>
+        <div class="sentence" id="sentence" style="display:none"></div>
       </div>
       <div id="choices" style="display:flex;flex-direction:column;gap:10px"></div>
       <div class="feedback" id="feedback"></div>
@@ -170,7 +189,7 @@
     </nav>
 
     <div class="empty" id="emptyMsg" style="display:none">No words yet. Ask Dad to add this week's list!</div>
-    <footer>Pick the right meaning &middot; it moves on when you get it</footer>
+    <footer id="footer">Pick the right meaning &middot; it moves on when you get it</footer>
   </div>
 </div>
 
@@ -233,12 +252,40 @@ function restart() {
   render();
 }
 
-// two wrong meanings, drawn from every other word on the site so there are always enough to choose from
+// two wrong answers, drawn from every other word on the site so there are always enough to choose from.
+// Never from the same word family (Declare/Declaration all look alike to a 5th grader), and in Sentences mode
+// never a word listed in "avoid" (one that could also fit that sentence). Wrong choices are also kept from
+// different families than each other.
+const fam = (x) => (x.family || x.word).toLowerCase();
 function distractors(w) {
-  const pool = SETS.flatMap((s) => s.words).filter((x) => x.def && x.def !== w.def && x.word.toLowerCase() !== w.word.toLowerCase());
-  const seen = new Set(), out = [];
-  for (const x of shuffle(pool.slice())) { if (!seen.has(x.def)) { seen.add(x.def); out.push(x.def); } if (out.length === 2) break; }
+  const avoid = new Set((w.avoid || []).map((a) => a.toLowerCase()));
+  const pool = SETS.flatMap((s) => s.words).filter((x) =>
+    fam(x) !== fam(w) && (mode === "def" ? x.def && x.def !== w.def : !avoid.has(x.word.toLowerCase())));
+  const fams = new Set(), out = [];
+  for (const x of shuffle(pool.slice())) {
+    if (fams.has(fam(x))) continue;
+    fams.add(fam(x)); out.push(mode === "def" ? x.def : x.word);
+    if (out.length === 2) break;
+  }
   return out;
+}
+
+let mode = "def";
+try { if (localStorage.getItem("will_spelling_mode") === "sent") mode = "sent"; } catch {}
+function setMode(m) {
+  mode = m;
+  try { localStorage.setItem("will_spelling_mode", m); } catch {}
+  $("modeDef").classList.toggle("active", m === "def");
+  $("modeSent").classList.toggle("active", m === "sent");
+  $("footer").textContent = m === "def" ? "Pick the right meaning · it moves on when you get it" : "Pick the word that fits the blank · it moves on when you get it";
+  if (WORDS.length) restart();
+}
+function blankHTML(w, filled) {
+  const esc = (t) => t.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+  const [a, b] = w.sentence.split("___");
+  // fill with the word as it reads mid-sentence, unless the blank opens the sentence or names a document (Declaration of Independence)
+  const fill = !filled ? "" : (a.trim() === "" || /^ of Independence/.test(b) ? w.word : w.word.toLowerCase());
+  return esc(a) + `<span class="blank">${esc(fill)}</span>` + esc(b);
 }
 
 function render() {
@@ -248,9 +295,14 @@ function render() {
   $("progNum").textContent = String(pos + 1).padStart(2, "0");
   $("hitNum").textContent = String(hits);
   $("prevBtn").disabled = pos === 0;
+  const sent = mode === "sent" && w.sentence;
+  $("ask").textContent = sent ? "Which word fits the blank?" : "What does this word mean?";
+  $("word").style.display = sent ? "none" : "";
+  $("sentence").style.display = sent ? "" : "none";
   $("word").textContent = w.word;
+  if (sent) $("sentence").innerHTML = blankHTML(w, false);
   $("feedback").textContent = ""; $("feedback").className = "feedback";
-  const opts = shuffle([{ text: w.def, ok: true }, ...distractors(w).map((d) => ({ text: d, ok: false }))]);
+  const opts = shuffle([{ text: sent ? w.word : w.def, ok: true }, ...distractors(w).map((d) => ({ text: d, ok: false }))]);
   const box = $("choices"); box.innerHTML = "";
   opts.forEach((o, i) => {
     const b = document.createElement("button");
@@ -269,6 +321,8 @@ function pick(btn, ok) {
     if (!missedThis) hits++;
     $("hitNum").textContent = String(hits);
     btn.classList.add("right");
+    const w = WORDS[order[pos]];
+    if (mode === "sent" && w.sentence) $("sentence").innerHTML = blankHTML(w, true);
     $("choices").querySelectorAll(".choice").forEach((b) => (b.disabled = true));
     $("wordcard").classList.remove("bounce"); void $("wordcard").offsetWidth; $("wordcard").classList.add("bounce");
     $("feedback").textContent = CHEERS[Math.floor(Math.random() * CHEERS.length)];
@@ -290,6 +344,9 @@ function next() {
 }
 function prev() { if (pos > 0) { pos--; render(); } }
 
+$("modeDef").addEventListener("click", () => setMode("def"));
+$("modeSent").addEventListener("click", () => setMode("sent"));
+setMode(mode);
 $("prevBtn").addEventListener("click", prev);
 $("skipBtn").addEventListener("click", next);
 $("playAgainBtn").addEventListener("click", restart);
