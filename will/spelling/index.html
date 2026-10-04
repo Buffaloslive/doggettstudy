@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Will's Word Lineup</title>
+<style>
+  :root {
+    --navy: #0b1f3a; --navy2: #0f2a4f; --field: #1c5f3e; --field2: #164a31;
+    --red: #c8102e; --gold: #f5b942; --white: #fdfaf2; --chalk: #c9d6e8;
+    --line: rgba(255,255,255,.14); --card: #fdfaf2; --ink: #16233a; --muted: #6b7688;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background:
+      radial-gradient(1200px 500px at 50% -10%, #123a63 0%, transparent 60%),
+      repeating-linear-gradient(135deg, rgba(255,255,255,.025) 0 2px, transparent 2px 26px),
+      linear-gradient(180deg, var(--navy) 0%, var(--navy2) 60%, #081627 100%);
+    color: var(--white);
+    font: 17px/1.4 -apple-system, "Segoe UI", system-ui, sans-serif;
+    display: flex; flex-direction: column; min-height: 100vh;
+    position: relative; overflow-x: hidden;
+  }
+  a.back { position: absolute; top: 14px; right: 18px; color: var(--chalk); text-decoration: none; font-size: 13px; font-weight: 700; z-index: 2; }
+
+  .layout { display: flex; flex: 1; align-items: stretch; }
+  .sidebar {
+    width: 210px; flex-shrink: 0; padding: 20px 14px; display: flex; flex-direction: column; gap: 8px;
+    border-right: 1px solid var(--line);
+  }
+  .sidebar h2 { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #6d8bb8; margin: 0 0 4px; }
+  .setbtn {
+    text-align: left; border: 1px solid var(--line); background: rgba(255,255,255,.05); color: var(--white);
+    font: inherit; font-weight: 700; font-size: 13px; padding: 10px 12px; border-radius: 10px; cursor: pointer;
+  }
+  .setbtn.active { background: var(--red); border-color: var(--red); box-shadow: 0 3px 10px rgba(200,16,46,.4); }
+  .setbtn.mash { background: rgba(245,185,66,.1); border-color: rgba(245,185,66,.4); color: var(--gold); }
+  .setbtn.mash.active { background: var(--gold); color: #16233a; border-color: var(--gold); }
+  .content { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 0 16px; min-width: 0; }
+  @media (max-width: 760px) {
+    .layout { flex-direction: column; }
+    .sidebar { width: auto; flex-direction: row; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+    .sidebar h2 { display: none; }
+    .setbtn { flex-shrink: 0; white-space: nowrap; }
+  }
+
+  header { text-align: center; margin: 22px 0 4px; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px; color: var(--gold);
+    font-weight: 800; font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+    background: rgba(245,185,66,.12); border: 1px solid rgba(245,185,66,.4);
+    padding: 5px 14px; border-radius: 999px; margin-bottom: 10px;
+  }
+  h1 {
+    font-size: clamp(26px, 7vw, 40px); margin: 0; font-weight: 900; letter-spacing: .01em;
+    text-transform: uppercase; color: var(--white);
+    text-shadow: 0 2px 0 var(--red), 0 4px 14px rgba(0,0,0,.45);
+  }
+  .tagline { color: var(--chalk); font-size: 15px; font-style: italic; font-weight: 600; margin-top: 8px; }
+  .tagline b { color: var(--gold); font-style: normal; }
+
+  .boards { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin: 16px 0 14px; }
+  .scoreboard {
+    display: flex; align-items: center; gap: 10px; background: #06101f; border: 3px solid #223a5e;
+    border-radius: 10px; padding: 8px 16px; box-shadow: inset 0 2px 8px rgba(0,0,0,.6);
+  }
+  .scoreboard .lbl { font-size: 10px; letter-spacing: .12em; color: #6d8bb8; font-weight: 800; text-transform: uppercase; }
+  .scoreboard .num {
+    font: 800 24px/1 "Courier New", monospace; color: var(--gold); text-shadow: 0 0 8px rgba(245,185,66,.6);
+    min-width: 1.6ch; text-align: center;
+  }
+  .scoreboard .of { color: #6d8bb8; font-weight: 700; font-size: 15px; }
+
+  .quiz { width: min(94vw, 480px); display: flex; flex-direction: column; gap: 14px; }
+  .wordcard {
+    background: var(--card); color: var(--ink); border: 3px dashed var(--red); border-radius: 18px;
+    padding: 26px 18px 22px; text-align: center; position: relative; box-shadow: 0 14px 34px rgba(0,0,0,.45);
+  }
+  .wordcard::before { content: "⚾"; position: absolute; top: 10px; right: 14px; font-size: 20px; opacity: .55; }
+  .wordcard .ask { color: var(--muted); font-size: 11.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+  .wordcard .word { font-size: clamp(30px, 9vw, 42px); font-weight: 900; margin-top: 6px; letter-spacing: .01em; word-break: break-word; }
+  .wordcard.bounce { animation: bounce .5s ease; }
+  @keyframes bounce { 0%,100% { transform: scale(1); } 45% { transform: scale(1.04); } }
+
+  .choice {
+    display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
+    border: 2px solid var(--line); background: rgba(255,255,255,.07); color: var(--white);
+    font: inherit; font-weight: 700; font-size: 16.5px; padding: 15px 16px; border-radius: 14px; cursor: pointer;
+    transition: background .15s, border-color .15s;
+  }
+  .choice .letter {
+    flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,.12);
+    display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; color: var(--gold);
+  }
+  @media (hover: hover) { .choice:not(:disabled):hover { border-color: var(--gold); background: rgba(245,185,66,.1); } }
+  .choice:not(:disabled):active { transform: scale(.98); }
+  .choice.wrong { background: rgba(200,16,46,.25); border-color: var(--red); color: #ffb3bd; opacity: .75; cursor: default; animation: shake .4s; }
+  .choice.wrong .letter { background: var(--red); color: #fff; }
+  .choice.right { background: var(--field); border-color: #3fbf7f; color: #fff; cursor: default; }
+  .choice.right .letter { background: #3fbf7f; color: #fff; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-6px)} 80%{transform:translateX(6px)} }
+
+  .feedback { min-height: 26px; text-align: center; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; font-size: 15px; }
+  .feedback.good { color: #6ee7a8; }
+  .feedback.bad { color: #ff8a9a; }
+
+  nav.pager { display: flex; align-items: center; gap: 14px; margin: 6px 0 10px; }
+  nav.pager button {
+    border: 1px solid var(--line); background: rgba(255,255,255,.06); color: var(--white); font: inherit; font-weight: 800;
+    padding: 11px 20px; border-radius: 12px; cursor: pointer; font-size: 14px; text-transform: uppercase; letter-spacing: .03em;
+  }
+  nav.pager button:disabled { opacity: .35; }
+
+  footer { text-align: center; color: #7f8caa; font-size: 12px; margin: 10px 0 40px; }
+  .empty { text-align: center; color: var(--chalk); font-weight: 700; padding: 40px; max-width: 320px; margin: auto; }
+
+  .overlay {
+    position: fixed; inset: 0; background: rgba(4,10,20,.86); display: none;
+    align-items: center; justify-content: center; padding: 20px; z-index: 20;
+  }
+  .overlay.show { display: flex; }
+  .win {
+    background: linear-gradient(180deg, #123a63, #0b1f3a); border: 2px solid var(--gold);
+    border-radius: 20px; padding: 34px 26px; max-width: 380px; text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,.6);
+  }
+  .win .trophy { font-size: 54px; }
+  .win h2 { color: var(--gold); text-transform: uppercase; font-size: 26px; margin: 8px 0 6px; font-weight: 900; }
+  .win p { color: var(--chalk); font-size: 15px; margin: 6px 0; }
+  .win .big { color: #fff; font-weight: 900; font-size: 22px; margin-top: 10px; }
+  .win button {
+    margin-top: 18px; border: 0; background: var(--red); color: #fff; font-weight: 800; font-size: 15px;
+    padding: 13px 26px; border-radius: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: .03em;
+    box-shadow: 0 6px 0 #8c0b21;
+  }
+  .win button:active { transform: translateY(3px); box-shadow: 0 3px 0 #8c0b21; }
+</style>
+</head>
+<body>
+<a class="back" href="/will/">&larr; Will</a>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <h2>Sets</h2>
+  </aside>
+  <div class="content">
+    <header>
+      <div class="eyebrow">⚾ Spelling &amp; Vocab</div>
+      <h1>Word Lineup</h1>
+      <div class="tagline">&ldquo;<b>A&rsquo;s</b> are made here.&rdquo;</div>
+    </header>
+
+    <div class="boards" id="boards">
+      <div class="scoreboard"><span class="lbl">Word</span><span class="num" id="progNum">01</span><span class="of">of&nbsp;<span id="totalNum">0</span></span></div>
+      <div class="scoreboard"><span class="lbl">First try</span><span class="num" id="hitNum">0</span></div>
+    </div>
+
+    <div class="quiz" id="quiz">
+      <div class="wordcard" id="wordcard">
+        <div class="ask">What does this word mean?</div>
+        <div class="word" id="word"></div>
+      </div>
+      <div id="choices" style="display:flex;flex-direction:column;gap:10px"></div>
+      <div class="feedback" id="feedback"></div>
+    </div>
+
+    <nav class="pager" id="pager">
+      <button id="prevBtn">&larr; Back</button>
+      <button id="skipBtn">Skip &rarr;</button>
+    </nav>
+
+    <div class="empty" id="emptyMsg" style="display:none">No words yet. Ask Dad to add this week's list!</div>
+    <footer>Pick the right meaning &middot; it moves on when you get it</footer>
+  </div>
+</div>
+
+<div class="overlay" id="winOverlay">
+  <div class="win">
+    <div class="trophy">🏆</div>
+    <h2>Ballgame!</h2>
+    <p>You went through the whole lineup.</p>
+    <div class="big" id="winScore"></div>
+    <button id="playAgainBtn">Play again</button>
+  </div>
+</div>
+
+<script>
+let SETS = [], WORDS = [], order = [], pos = 0, hits = 0, missedThis = false, locked = false;
+const $ = (id) => document.getElementById(id);
+const CHEERS = ["Home run!", "Nailed it!", "Base hit!", "Strike three, you're right!", "Grand slam!", "Right down the middle!"];
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; }
+  return arr;
+}
+
+async function boot() {
+  let data;
+  try { data = await (await fetch("data/words.json?v=" + Date.now())).json(); } catch { data = { sets: [] }; }
+  SETS = (data.sets || []).filter((s) => s.words && s.words.length);
+  if (!SETS.length) {
+    ["quiz", "pager", "boards"].forEach((id) => ($(id).style.display = "none"));
+    $("emptyMsg").style.display = "block";
+    return;
+  }
+  const sidebar = $("sidebar");
+  SETS.forEach((s, i) => {
+    const b = document.createElement("button");
+    b.className = "setbtn"; b.dataset.value = String(i);
+    b.textContent = `${s.name} (${s.words[0].word.toLowerCase()})`;
+    sidebar.appendChild(b);
+  });
+  if (SETS.length > 1) {
+    const b = document.createElement("button");
+    b.className = "setbtn mash"; b.dataset.value = "all"; b.textContent = "🏆 All Sets (Big Review)";
+    sidebar.appendChild(b);
+  }
+  sidebar.addEventListener("click", (e) => { const b = e.target.closest(".setbtn"); if (b) loadSet(b.dataset.value); });
+  loadSet("0");
+}
+
+function loadSet(value) {
+  WORDS = value === "all" ? SETS.flatMap((s) => s.words) : SETS[Number(value)].words;
+  $("sidebar").querySelectorAll(".setbtn").forEach((b) => b.classList.toggle("active", b.dataset.value === value));
+  restart();
+}
+
+function restart() {
+  order = shuffle(WORDS.map((_, i) => i));
+  pos = 0; hits = 0;
+  $("totalNum").textContent = String(WORDS.length);
+  $("winOverlay").classList.remove("show");
+  render();
+}
+
+// two wrong meanings, drawn from every other word on the site so there are always enough to choose from
+function distractors(w) {
+  const pool = SETS.flatMap((s) => s.words).filter((x) => x.def && x.def !== w.def && x.word.toLowerCase() !== w.word.toLowerCase());
+  const seen = new Set(), out = [];
+  for (const x of shuffle(pool.slice())) { if (!seen.has(x.def)) { seen.add(x.def); out.push(x.def); } if (out.length === 2) break; }
+  return out;
+}
+
+function render() {
+  const w = WORDS[order[pos]];
+  if (!w) return;
+  missedThis = false; locked = false;
+  $("progNum").textContent = String(pos + 1).padStart(2, "0");
+  $("hitNum").textContent = String(hits);
+  $("prevBtn").disabled = pos === 0;
+  $("word").textContent = w.word;
+  $("feedback").textContent = ""; $("feedback").className = "feedback";
+  const opts = shuffle([{ text: w.def, ok: true }, ...distractors(w).map((d) => ({ text: d, ok: false }))]);
+  const box = $("choices"); box.innerHTML = "";
+  opts.forEach((o, i) => {
+    const b = document.createElement("button");
+    b.className = "choice";
+    b.innerHTML = `<span class="letter">${"ABC"[i]}</span><span></span>`;
+    b.lastChild.textContent = o.text;
+    b.addEventListener("click", () => pick(b, o.ok));
+    box.appendChild(b);
+  });
+}
+
+function pick(btn, ok) {
+  if (locked || btn.disabled) return;
+  if (ok) {
+    locked = true;
+    if (!missedThis) hits++;
+    $("hitNum").textContent = String(hits);
+    btn.classList.add("right");
+    $("choices").querySelectorAll(".choice").forEach((b) => (b.disabled = true));
+    $("wordcard").classList.remove("bounce"); void $("wordcard").offsetWidth; $("wordcard").classList.add("bounce");
+    $("feedback").textContent = CHEERS[Math.floor(Math.random() * CHEERS.length)];
+    $("feedback").className = "feedback good";
+    setTimeout(next, 1100);
+  } else {
+    missedThis = true;
+    btn.classList.add("wrong"); btn.disabled = true;
+    $("feedback").textContent = "Strike! Try again"; $("feedback").className = "feedback bad";
+  }
+}
+
+function next() {
+  if (pos < WORDS.length - 1) { pos++; render(); }
+  else {
+    $("winScore").textContent = `${hits} of ${WORDS.length} on the first try`;
+    $("winOverlay").classList.add("show");
+  }
+}
+function prev() { if (pos > 0) { pos--; render(); } }
+
+$("prevBtn").addEventListener("click", prev);
+$("skipBtn").addEventListener("click", next);
+$("playAgainBtn").addEventListener("click", restart);
+document.addEventListener("keydown", (e) => {
+  const i = ["1", "2", "3", "a", "b", "c"].indexOf(e.key.toLowerCase()) % 3;
+  if (i >= 0 && !$("winOverlay").classList.contains("show")) { const b = $("choices").children[i]; if (b) b.click(); }
+});
+
+boot();
+</script>
+<script src="/gate.js"></script>
+</body>
+</html>

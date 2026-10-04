@@ -1,0 +1,97 @@
+{
+  "sets": [
+    {
+      "name": "Set 1",
+      "words": [
+        {
+          "word": "Affection",
+          "def": "A feeling of love."
+        },
+        {
+          "word": "Affectionate",
+          "def": "Showing love and care."
+        },
+        {
+          "word": "Appeal",
+          "def": "A serious request; attract interest."
+        },
+        {
+          "word": "Clasp",
+          "def": "Hold tightly; a fastener."
+        },
+        {
+          "word": "Conspicuous",
+          "def": "Easy to see or notice."
+        },
+        {
+          "word": "Contribute",
+          "def": "Give or help bring about."
+        },
+        {
+          "word": "Contribution",
+          "def": "Something given to help."
+        },
+        {
+          "word": "Contributor",
+          "def": "Someone who gives or helps."
+        },
+        {
+          "word": "Declare",
+          "def": "Say openly and clearly."
+        },
+        {
+          "word": "Declaration",
+          "def": "A public or official statement."
+        },
+        {
+          "word": "Eloquent",
+          "def": "Speaking or writing with power."
+        },
+        {
+          "word": "Eloquence",
+          "def": "Powerful speaking or writing."
+        },
+        {
+          "word": "Exhibit",
+          "def": "Show publicly; a public display."
+        },
+        {
+          "word": "Exhibition",
+          "def": "A large public show."
+        },
+        {
+          "word": "Ferry",
+          "def": "Carry across water by boat."
+        },
+        {
+          "word": "Immigrant",
+          "def": "Someone settling in another country."
+        },
+        {
+          "word": "Lofty",
+          "def": "Very high; noble; acting superior."
+        },
+        {
+          "word": "Pedestal",
+          "def": "A base supporting something."
+        },
+        {
+          "word": "Persecute",
+          "def": "Treat cruelly because of differences."
+        },
+        {
+          "word": "Persecution",
+          "def": "Cruel treatment because of differences."
+        },
+        {
+          "word": "Poverty",
+          "def": "The condition of being poor."
+        },
+        {
+          "word": "Unveil",
+          "def": "Uncover or reveal something new."
+        }
+      ]
+    }
+  ]
+}
