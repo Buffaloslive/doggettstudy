@@ -64,6 +64,23 @@
           "img": "images/tablet.png"
         }
       ]
+    },
+    {
+      "name": "Set 2",
+      "cards": [
+        { "en": "Take out!", "la": "Prome!",   "img": "images/prome.png" },
+        { "en": "Put away!", "la": "Conde!",   "img": "images/conde.png" },
+        { "en": "Pick up!",  "la": "Tolle!",   "img": "images/tolle.png" },
+        { "en": "Put down!", "la": "Depóne!",  "img": "images/depone.png" },
+        { "en": "Draw!",     "la": "Delínea!", "img": "images/delinea.png" },
+        { "en": "Write!",    "la": "Scribe!",  "img": "images/scribe.png" },
+        { "en": "Erase!",    "la": "Delē!",    "img": "images/dele.png" },
+        { "en": "Notebook",  "la": "Libellus", "img": "images/libellus.png" },
+        { "en": "Pen",       "la": "Graphium", "img": "images/graphium.png" },
+        { "en": "Marker",    "la": "Cálamus",  "img": "images/calamus.png" },
+        { "en": "Pencil",    "la": "Cérula",   "img": "images/cerula.png" },
+        { "en": "Eraser",    "la": "Cummi",    "img": "images/cummi.png" }
+      ]
     }
   ]
 }
