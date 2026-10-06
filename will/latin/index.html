@@ -157,15 +157,15 @@
   .choice.right .letter { background: #3fbf7f; color: #fff; }
 
   /* picture choices (Pick the Picture) */
-  .pchoices { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .pchoices { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
   @media (min-width: 560px) { .pchoices { grid-template-columns: repeat(3, 1fr); } }
   .pchoice {
-    background: var(--card); border: 3px solid var(--line); border-radius: 14px; padding: 10px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; min-height: 104px; position: relative;
+    background: var(--card); border: 3px solid var(--line); border-radius: 14px; padding: 9px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; min-height: 88px; position: relative;
     transition: border-color .15s, box-shadow .15s;
   }
-  .pchoice img { max-height: 130px; max-width: 100%; object-fit: contain; }
-  @media (min-width: 560px) { .pchoice img { max-height: 110px; } }
+  .pchoice img { max-height: 108px; max-width: 100%; object-fit: contain; }
+  @media (min-width: 560px) { .pchoice img { max-height: 92px; } }
   @media (hover: hover) { .pchoice:not(:disabled):hover { border-color: var(--gold); } }
   .pchoice:not(:disabled):active { transform: scale(.98); }
   .pchoice.wrong { border-color: var(--red); background: rgba(200,16,46,.12); animation: shake .4s; opacity: .7; cursor: default; }
@@ -468,7 +468,7 @@ function renderMCPic() {
   progNum.textContent = String(pos + 1).padStart(2, "0");
   $("hitNum").textContent = String(hits);
   $("prevBtn").disabled = pos === 0;
-  const distract = otherIdxs(ci).slice(0, 2);
+  const distract = otherIdxs(ci).slice(0, 5);  // 1 correct + 5 distractors = 6 picture choices
   const opts = shuffle([{ img: c.img, ok: true }, ...distract.map((i) => ({ img: CARDS[i].img, ok: false }))]);
   const box = $("picChoices"); box.innerHTML = "";
   opts.forEach((o, i) => {
@@ -554,8 +554,13 @@ $("modeEn").addEventListener("click", () => { mode = "en"; $("modeEn").classList
 document.addEventListener("keydown", (e) => {
   if (winOverlay.classList.contains("show")) return;
   if (study === "mcword" || study === "mcpic") {
-    const i = ["1", "2", "3", "a", "b", "c"].indexOf(e.key.toLowerCase()) % 3;
-    if (i >= 0) { const sel = study === "mcpic" ? "#picChoices .pchoice" : "#mcChoices .choice"; const b = document.querySelectorAll(sel)[i]; if (b) b.click(); return; }
+    if (study === "mcpic") {
+      const n = "123456".indexOf(e.key);
+      if (n >= 0) { const b = document.querySelectorAll("#picChoices .pchoice")[n]; if (b) b.click(); return; }
+    } else {
+      const i = ["1", "2", "3", "a", "b", "c"].indexOf(e.key.toLowerCase()) % 3;
+      if (i >= 0) { const b = document.querySelectorAll("#mcChoices .choice")[i]; if (b) b.click(); return; }
+    }
     if (e.code === "ArrowRight") next(); else if (e.code === "ArrowLeft") prev();
   } else {
     if (e.code === "Space" || e.code === "Enter") { e.preventDefault(); flip(); }
