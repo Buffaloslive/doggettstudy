@@ -36,19 +36,15 @@
     text-shadow: 0 2px 0 var(--red), 0 4px 14px rgba(0,0,0,.45);
   }
   .stitches { width: 150px; height: 10px; margin: 10px auto 8px; }
-  .tagline {
-    color: var(--chalk); font-size: 15px; font-style: italic; font-weight: 600; margin-top: 2px;
-  }
+  .tagline { color: var(--chalk); font-size: 15px; font-style: italic; font-weight: 600; margin-top: 2px; }
   .tagline b { color: var(--gold); font-style: normal; }
 
   .controls { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 14px 0 6px; }
-  .toggle {
-    display: flex; background: rgba(255,255,255,.06); border: 1px solid var(--line); border-radius: 999px; padding: 3px;
-  }
+  .toggle { display: flex; background: rgba(255,255,255,.06); border: 1px solid var(--line); border-radius: 999px; padding: 3px; flex-wrap: wrap; }
   .toggle.study { border-color: rgba(245,185,66,.45); }
   .toggle button {
     border: 0; background: transparent; color: var(--white); font: inherit; font-weight: 700;
-    padding: 9px 16px; border-radius: 999px; cursor: pointer; font-size: 13.5px; text-transform: uppercase; letter-spacing: .03em;
+    padding: 9px 15px; border-radius: 999px; cursor: pointer; font-size: 13px; text-transform: uppercase; letter-spacing: .02em;
   }
   .toggle button.active { background: var(--red); color: #fff; box-shadow: 0 3px 10px rgba(200,16,46,.5); }
   .toggle.study button.active { background: var(--gold); color: #16233a; box-shadow: 0 3px 10px rgba(245,185,66,.45); }
@@ -106,12 +102,8 @@
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
     padding: 22px; box-shadow: 0 14px 34px rgba(0,0,0,.45);
   }
-  .front {
-    background: var(--card); border: 3px dashed var(--red); position: relative;
-  }
-  .front::before {
-    content: "⚾"; position: absolute; top: 10px; right: 14px; font-size: 20px; opacity: .55;
-  }
+  .front { background: var(--card); border: 3px dashed var(--red); position: relative; }
+  .front::before { content: "⚾"; position: absolute; top: 10px; right: 14px; font-size: 20px; opacity: .55; }
   .back {
     background:
       radial-gradient(120px 120px at 50% 18%, rgba(255,255,255,.08), transparent 60%),
@@ -120,14 +112,13 @@
   }
   .front img { width: 68%; max-width: 220px; object-fit: contain; filter: drop-shadow(0 2px 3px rgba(0,0,0,.15)); }
   .front .word { font-size: 28px; font-weight: 800; text-align: center; color: var(--ink); }
-  .tapme {
-    position: absolute; bottom: 12px; color: var(--muted); font-size: 11.5px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: .08em;
-  }
+  .tapme { position: absolute; bottom: 12px; color: var(--muted); font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
   .la { font-size: 32px; font-weight: 900; text-align: center; line-height: 1.15; text-shadow: 0 2px 6px rgba(0,0,0,.35); }
   .en { font-size: 17px; opacity: 0.92; text-align: center; font-weight: 600; }
+  .sayback { margin-top: 4px; border: 1px solid rgba(255,255,255,.3); background: rgba(255,255,255,.1); color: #fff; border-radius: 999px; padding: 7px 14px; font: inherit; font-weight: 800; font-size: 13px; cursor: pointer; }
+  .sayback:active { transform: scale(.96); }
 
-  /* ---- Multiple-choice stage ---- */
+  /* ---- Multiple-choice shared ---- */
   .mcstage { width: min(94vw, 440px); display: flex; flex-direction: column; gap: 14px; }
   .qcard {
     background: var(--card); color: var(--ink); border: 3px dashed var(--red); border-radius: 18px;
@@ -137,7 +128,16 @@
   .qcard::before { content: "⚾"; position: absolute; top: 10px; right: 14px; font-size: 20px; opacity: .55; }
   .qcard .ask { color: var(--muted); font-size: 11.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
   .qcard img { width: 62%; max-width: 200px; object-fit: contain; filter: drop-shadow(0 2px 3px rgba(0,0,0,.15)); }
+  .qcard .latinword { font-size: clamp(32px, 10vw, 46px); font-weight: 900; letter-spacing: .01em; color: var(--ink); line-height: 1.1; }
   .qcard.bounce { animation: bounce .5s ease; }
+  .speakbtn {
+    border: 1px solid rgba(0,0,0,.15); background: #fff; color: var(--ink); border-radius: 999px;
+    padding: 9px 16px; font: inherit; font-weight: 800; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 7px;
+  }
+  .speakbtn:active { transform: scale(.96); }
+  .speakbtn .spk { font-size: 17px; }
+
+  /* text choices (Pick the Word) */
   .choices { display: flex; flex-direction: column; gap: 10px; }
   .choice {
     display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
@@ -155,6 +155,23 @@
   .choice.wrong .letter { background: var(--red); color: #fff; }
   .choice.right { background: var(--field); border-color: #3fbf7f; color: #fff; cursor: default; }
   .choice.right .letter { background: #3fbf7f; color: #fff; }
+
+  /* picture choices (Pick the Picture) */
+  .pchoices { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  @media (min-width: 560px) { .pchoices { grid-template-columns: repeat(3, 1fr); } }
+  .pchoice {
+    background: var(--card); border: 3px solid var(--line); border-radius: 14px; padding: 10px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; min-height: 104px; position: relative;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .pchoice img { max-height: 130px; max-width: 100%; object-fit: contain; }
+  @media (min-width: 560px) { .pchoice img { max-height: 110px; } }
+  @media (hover: hover) { .pchoice:not(:disabled):hover { border-color: var(--gold); } }
+  .pchoice:not(:disabled):active { transform: scale(.98); }
+  .pchoice.wrong { border-color: var(--red); background: rgba(200,16,46,.12); animation: shake .4s; opacity: .7; cursor: default; }
+  .pchoice.right { border-color: #3fbf7f; box-shadow: 0 0 0 3px rgba(63,191,127,.4); cursor: default; }
+  .pchoice .pick { position: absolute; top: 6px; left: 8px; font-weight: 900; font-size: 13px; color: var(--muted); background: rgba(255,255,255,.7); border-radius: 6px; padding: 1px 7px; }
+
   @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-6px)} 80%{transform:translateX(6px)} }
   .feedback { min-height: 24px; text-align: center; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; font-size: 15px; }
   .feedback.good { color: #6ee7a8; }
@@ -168,9 +185,7 @@
   }
   nav.pager button:active { transform: translateY(3px); box-shadow: 0 3px 0 #8c0b21; }
   nav.pager button:disabled { opacity: 0.35; box-shadow: none; }
-  nav.pager button.ghost {
-    background: rgba(255,255,255,.06); color: var(--white); border: 1px solid var(--line); box-shadow: none;
-  }
+  nav.pager button.ghost { background: rgba(255,255,255,.06); color: var(--white); border: 1px solid var(--line); box-shadow: none; }
   nav.pager button.ghost:active { transform: translateY(1px); }
 
   .stamp {
@@ -190,36 +205,26 @@
 
   footer { text-align: center; color: #7f8caa; font-size: 12px; margin: 18px 0 60px; }
 
-  .overlay {
-    position: fixed; inset: 0; background: rgba(4,10,20,.86); display: none;
-    align-items: center; justify-content: center; padding: 20px; z-index: 20;
-  }
+  .overlay { position: fixed; inset: 0; background: rgba(4,10,20,.86); display: none; align-items: center; justify-content: center; padding: 20px; z-index: 20; }
   .overlay.show { display: flex; }
   .win {
     background: linear-gradient(180deg, #123a63, #0b1f3a); border: 2px solid var(--gold);
-    border-radius: 20px; padding: 34px 26px; max-width: 380px; text-align: center;
-    box-shadow: 0 20px 60px rgba(0,0,0,.6);
+    border-radius: 20px; padding: 34px 26px; max-width: 380px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,.6);
   }
   .win .trophy { font-size: 54px; }
-  .win h2 {
-    color: var(--gold); text-transform: uppercase; font-size: 26px; margin: 8px 0 6px; font-weight: 900;
-    text-shadow: 0 2px 0 rgba(0,0,0,.4);
-  }
+  .win h2 { color: var(--gold); text-transform: uppercase; font-size: 26px; margin: 8px 0 6px; font-weight: 900; text-shadow: 0 2px 0 rgba(0,0,0,.4); }
   .win p { color: var(--chalk); font-size: 15px; margin: 6px 0; }
   .win .work { color: #fff; font-weight: 900; letter-spacing: .06em; margin-top: 14px; font-size: 15px; }
   .win button {
     margin-top: 18px; border: 0; background: var(--red); color: #fff; font-weight: 800; font-size: 15px;
-    padding: 13px 26px; border-radius: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: .03em;
-    box-shadow: 0 6px 0 #8c0b21;
+    padding: 13px 26px; border-radius: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: .03em; box-shadow: 0 6px 0 #8c0b21;
   }
   .win button:active { transform: translateY(3px); box-shadow: 0 3px 0 #8c0b21; }
 </style>
 </head>
 <body>
 <div class="layout">
-  <aside class="sidebar" id="sidebar">
-    <h2>Sets</h2>
-  </aside>
+  <aside class="sidebar" id="sidebar"><h2>Sets</h2></aside>
   <div class="content">
     <header>
       <div class="eyebrow">⚾ 5th Grade Latin League</div>
@@ -231,7 +236,8 @@
     <div class="controls">
       <div class="toggle study" role="group" aria-label="Study mode">
         <button id="studyFlash" class="active">Flashcards</button>
-        <button id="studyMC">Multiple Choice</button>
+        <button id="studyWord">Pick the Word</button>
+        <button id="studyPic">Pick the Picture</button>
       </div>
       <button class="iconbtn" id="shuffleBtn" title="Mix up the lineup">&#128256;</button>
       <button class="iconbtn" id="restartBtn" title="Start over">&#8635;</button>
@@ -245,17 +251,11 @@
 
     <main>
       <div class="boards">
-        <div class="scoreboard">
-          <span class="lbl">Card</span>
-          <span class="num" id="progNum">01</span>
-          <span class="of">of&nbsp;<span id="totalNum">12</span></span>
-        </div>
-        <div class="scoreboard" id="hitBoard" style="display:none">
-          <span class="lbl">First try</span>
-          <span class="num" id="hitNum">0</span>
-        </div>
+        <div class="scoreboard"><span class="lbl">Card</span><span class="num" id="progNum">01</span><span class="of">of&nbsp;<span id="totalNum">12</span></span></div>
+        <div class="scoreboard" id="hitBoard" style="display:none"><span class="lbl">First try</span><span class="num" id="hitNum">0</span></div>
       </div>
 
+      <!-- Flashcards -->
       <div class="stage" id="flashStage">
         <div class="card" id="card">
           <div class="face front" id="front">
@@ -266,10 +266,12 @@
           <div class="face back">
             <div class="la" id="backLa"></div>
             <div class="en" id="backEn"></div>
+            <button class="sayback" id="saybackBtn" type="button">🔊 Hear it</button>
           </div>
         </div>
       </div>
 
+      <!-- Pick the Word: picture -> 3 Latin words -->
       <div class="mcstage" id="mcStage" style="display:none">
         <div class="qcard" id="qcard">
           <div class="ask">Pick the word</div>
@@ -277,6 +279,17 @@
         </div>
         <div class="choices" id="mcChoices"></div>
         <div class="feedback" id="mcFeedback"></div>
+      </div>
+
+      <!-- Pick the Picture: word (+ audio) -> 3 pictures -->
+      <div class="mcstage" id="picStage" style="display:none">
+        <div class="qcard" id="qcardW">
+          <div class="ask">The teacher says&hellip;</div>
+          <div class="latinword" id="picWord"></div>
+          <button class="speakbtn" id="speakBtn" type="button"><span class="spk">🔊</span> Say it again</button>
+        </div>
+        <div class="pchoices" id="picChoices"></div>
+        <div class="feedback" id="picFeedback"></div>
       </div>
 
       <nav class="pager">
@@ -307,14 +320,15 @@
 <script>
 // ---- Cards live in data/sets.json, not here, so the local admin tool (and William)
 // can add new weekly sets without touching this file. See ../ADMIN.md for how.
-let SETS = [];
-let CARDS = [];
-let order = [];
-let pos = 0;
-let mode = "pic";    // flashcard front: "pic" or "en"
-let study = "flash"; // "flash" (flip) or "mc" (multiple choice)
-let hits = 0, missedThis = false, locked = false;
-try { if (localStorage.getItem("will_latin_study") === "mc") study = "mc"; } catch (e) {}
+let SETS = [], CARDS = [], order = [], pos = 0;
+let mode = "pic";       // flashcard front: "pic" or "en"
+let study = "flash";    // "flash" | "mcword" (pick the word) | "mcpic" (pick the picture)
+let hits = 0, missedThis = false, locked = false, advanceT = 0;
+try {
+  const s = localStorage.getItem("will_latin_study");
+  if (s === "mcpic" || s === "mcword") study = s;
+  else if (s === "mc") study = "mcword"; // migrate old value
+} catch (e) {}
 
 const CHEERS = ["Home run!", "Nailed it!", "Base hit!", "Right down the middle!", "Grand slam!", "That's the one!"];
 const $ = (id) => document.getElementById(id);
@@ -323,30 +337,60 @@ const backLa = $("backLa"), backEn = $("backEn"), progNum = $("progNum"), totalN
 const winOverlay = $("winOverlay"), sidebar = $("sidebar");
 let currentSetValue = "0";
 
+/* ---------- Latin pronunciation (best-effort; an Italian voice is closest to Latin vowels) ---------- */
+let latinVoice = null, voicePref = null, warmed = false;
+function pickVoice() {
+  try {
+    const vs = speechSynthesis.getVoices();
+    if (!vs || !vs.length) return;
+    latinVoice =
+      vs.find(v => /^it[-_]/i.test(v.lang)) ||       // Italian — ecclesiastical-ish, good vowels
+      vs.find(v => /^es[-_]/i.test(v.lang)) ||        // Spanish — clean 5-vowel system
+      vs.find(v => /^la([-_]|$)/i.test(v.lang)) ||    // actual Latin, if present
+      null;
+    voicePref = latinVoice ? latinVoice.lang : "it-IT";
+  } catch (e) {}
+}
+if ("speechSynthesis" in window) {
+  pickVoice();
+  speechSynthesis.onvoiceschanged = pickVoice;
+}
+// Warm the engine on the first user gesture — kills the "phantom syllable" first-utterance glitch.
+function warmup() {
+  if (warmed || !("speechSynthesis" in window)) return;
+  warmed = true;
+  try { const u = new SpeechSynthesisUtterance(" "); u.volume = 0; speechSynthesis.speak(u); } catch (e) {}
+}
+function speakLatin(word) {
+  if (!("speechSynthesis" in window) || !word) return;
+  try {
+    speechSynthesis.cancel();                 // clear any queued glitch before speaking
+    const u = new SpeechSynthesisUtterance(word.replace(/[!?.]/g, "").trim());
+    if (latinVoice) u.voice = latinVoice;
+    u.lang = voicePref || "it-IT";
+    u.rate = 0.82; u.pitch = 1;
+    speechSynthesis.speak(u);
+  } catch (e) {}
+}
+
 async function boot() {
   const res = await fetch("data/sets.json?v=" + Date.now());
   const data = await res.json();
   SETS = data.sets || [];
   if (!SETS.length) return;
-
   SETS.forEach((s, i) => {
     const btn = document.createElement("button");
-    btn.className = "setbtn";
-    btn.dataset.value = String(i);
+    btn.className = "setbtn"; btn.dataset.value = String(i);
     btn.textContent = `${s.name} (${s.cards[0].en})`;
     sidebar.appendChild(btn);
   });
   if (SETS.length > 1) {
     const btn = document.createElement("button");
-    btn.className = "setbtn mash";
-    btn.dataset.value = "all";
+    btn.className = "setbtn mash"; btn.dataset.value = "all";
     btn.textContent = "🏆 All Sets (Final Exam)";
     sidebar.appendChild(btn);
   }
-  sidebar.addEventListener("click", (e) => {
-    const btn = e.target.closest(".setbtn");
-    if (btn) loadSet(btn.dataset.value);
-  });
+  sidebar.addEventListener("click", (e) => { const b = e.target.closest(".setbtn"); if (b) loadSet(b.dataset.value); });
   loadSet("0");
   setStudy(study);
 }
@@ -363,27 +407,25 @@ function loadSet(value) {
 }
 
 function shuffle(arr) {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
+  for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; }
   return arr;
 }
+function otherIdxs(exceptIdx) { return shuffle(CARDS.map((_, i) => i).filter((i) => i !== exceptIdx)); }
 
 /* ---------- dispatch ---------- */
-function render() { if (study === "mc") renderMC(); else renderFlash(); }
+function render() {
+  clearTimeout(advanceT);  // cancel any pending auto-advance so restart/skip/mode-change can't be jumped past
+  if (study === "mcword") renderMCWord();
+  else if (study === "mcpic") renderMCPic();
+  else renderFlash();
+}
 
-/* ---------- flashcard (flip) ---------- */
+/* ---------- flashcards ---------- */
 function renderFlash() {
   card.classList.remove("flipped");
   const c = CARDS[order[pos]];
-  if (mode === "pic") {
-    frontIcon.style.display = ""; frontIcon.src = c.img;
-    frontWord.style.display = "none";
-  } else {
-    frontIcon.style.display = "none";
-    frontWord.style.display = ""; frontWord.textContent = c.en;
-  }
+  if (mode === "pic") { frontIcon.style.display = ""; frontIcon.src = c.img; frontWord.style.display = "none"; }
+  else { frontIcon.style.display = "none"; frontWord.style.display = ""; frontWord.textContent = c.en; }
   backLa.textContent = c.la;
   backEn.textContent = "(" + c.en + ")";
   progNum.textContent = String(pos + 1).padStart(2, "0");
@@ -392,62 +434,78 @@ function renderFlash() {
 function flip() {
   card.classList.toggle("flipped");
   card.classList.remove("bounce"); void card.offsetWidth; card.classList.add("bounce");
+  if (card.classList.contains("flipped")) speakLatin(CARDS[order[pos]].la); // hear it when the Latin shows
 }
 
-/* ---------- multiple choice ---------- */
-function mcDistractors(correctLa) {
-  const pool = shuffle(CARDS.map((c) => c.la).filter((la) => la !== correctLa));
-  const out = [];
-  for (const la of pool) { if (!out.includes(la)) out.push(la); if (out.length === 2) break; }
-  return out;
-}
-function renderMC() {
-  const c = CARDS[order[pos]];
+/* ---------- Pick the Word (picture -> 3 Latin words) ---------- */
+function renderMCWord() {
+  const ci = order[pos], c = CARDS[ci];
   missedThis = false; locked = false;
   $("mcImg").src = c.img; $("mcImg").alt = "";
   $("mcFeedback").textContent = ""; $("mcFeedback").className = "feedback";
   progNum.textContent = String(pos + 1).padStart(2, "0");
   $("hitNum").textContent = String(hits);
   $("prevBtn").disabled = pos === 0;
-  const opts = shuffle([{ text: c.la, ok: true }, ...mcDistractors(c.la).map((d) => ({ text: d, ok: false }))]);
+  const distract = []; for (const i of otherIdxs(ci)) { if (CARDS[i].la !== c.la && !distract.includes(CARDS[i].la)) distract.push(CARDS[i].la); if (distract.length === 2) break; }
+  const opts = shuffle([{ text: c.la, ok: true }, ...distract.map((d) => ({ text: d, ok: false }))]);
   const box = $("mcChoices"); box.innerHTML = "";
   opts.forEach((o, i) => {
     const b = document.createElement("button");
     b.className = "choice";
     b.innerHTML = `<span class="letter">${"ABC"[i]}</span><span></span>`;
     b.lastChild.textContent = o.text;
-    b.addEventListener("click", () => pickMC(b, o.ok));
+    b.addEventListener("click", () => answer(b, o.ok, "#mcChoices .choice", $("qcard"), $("mcFeedback")));
     box.appendChild(b);
   });
 }
-function pickMC(btn, ok) {
+
+/* ---------- Pick the Picture (word + audio -> 3 pictures) ---------- */
+function renderMCPic() {
+  const ci = order[pos], c = CARDS[ci];
+  missedThis = false; locked = false;
+  $("picWord").textContent = c.la;
+  $("picFeedback").textContent = ""; $("picFeedback").className = "feedback";
+  progNum.textContent = String(pos + 1).padStart(2, "0");
+  $("hitNum").textContent = String(hits);
+  $("prevBtn").disabled = pos === 0;
+  const distract = otherIdxs(ci).slice(0, 2);
+  const opts = shuffle([{ img: c.img, ok: true }, ...distract.map((i) => ({ img: CARDS[i].img, ok: false }))]);
+  const box = $("picChoices"); box.innerHTML = "";
+  opts.forEach((o, i) => {
+    const b = document.createElement("button");
+    b.className = "pchoice";
+    b.innerHTML = `<span class="pick">${i + 1}</span><img alt="">`;
+    b.querySelector("img").src = o.img;
+    b.addEventListener("click", () => answer(b, o.ok, "#picChoices .pchoice", $("qcardW"), $("picFeedback")));
+    box.appendChild(b);
+  });
+  speakLatin(c.la); // the "teacher" calls out the word
+}
+
+/* ---------- shared answer handler ---------- */
+function answer(btn, ok, allSel, bounceEl, fbEl) {
   if (locked || btn.disabled) return;
   if (ok) {
     locked = true;
     if (!missedThis) { hits++; $("hitNum").textContent = String(hits); }
     btn.classList.add("right");
-    $("mcChoices").querySelectorAll(".choice").forEach((b) => (b.disabled = true));
-    $("qcard").classList.remove("bounce"); void $("qcard").offsetWidth; $("qcard").classList.add("bounce");
-    $("mcFeedback").textContent = CHEERS[Math.floor(Math.random() * CHEERS.length)];
-    $("mcFeedback").className = "feedback good";
-    setTimeout(next, 1000);
+    document.querySelectorAll(allSel).forEach((b) => (b.disabled = true));
+    if (bounceEl) { bounceEl.classList.remove("bounce"); void bounceEl.offsetWidth; bounceEl.classList.add("bounce"); }
+    fbEl.textContent = CHEERS[Math.floor(Math.random() * CHEERS.length)]; fbEl.className = "feedback good";
+    advanceT = setTimeout(next, 1000);
   } else {
-    missedThis = true;
-    btn.classList.add("wrong"); btn.disabled = true;
-    $("mcFeedback").textContent = "Strike! Try again"; $("mcFeedback").className = "feedback bad";
+    missedThis = true; btn.classList.add("wrong"); btn.disabled = true;
+    fbEl.textContent = "Strike! Try again"; fbEl.className = "feedback bad";
   }
 }
 
 /* ---------- navigation ---------- */
-function next() {
-  if (pos < CARDS.length - 1) { pos++; render(); }
-  else { showWin(); }
-}
+function next() { if (pos < CARDS.length - 1) { pos++; render(); } else showWin(); }
 function prev() { if (pos > 0) { pos--; render(); } }
 function restart() { order = CARDS.map((_, i) => i); pos = 0; hits = 0; render(); winOverlay.classList.remove("show"); }
 function showWin() {
   const total = CARDS.length;
-  $("winStat").textContent = study === "mc"
+  $("winStat").textContent = (study === "mcword" || study === "mcpic")
     ? `${hits} of ${total} on the first try.`
     : `All ${total} cards, done. That's how champs study.`;
   winOverlay.classList.add("show");
@@ -458,15 +516,19 @@ function setStudy(m) {
   study = m;
   try { localStorage.setItem("will_latin_study", m); } catch (e) {}
   $("studyFlash").classList.toggle("active", m === "flash");
-  $("studyMC").classList.toggle("active", m === "mc");
+  $("studyWord").classList.toggle("active", m === "mcword");
+  $("studyPic").classList.toggle("active", m === "mcpic");
   $("flashStage").style.display = m === "flash" ? "" : "none";
-  $("mcStage").style.display = m === "mc" ? "" : "none";
+  $("mcStage").style.display = m === "mcword" ? "" : "none";
+  $("picStage").style.display = m === "mcpic" ? "" : "none";
   $("dirControls").style.display = m === "flash" ? "" : "none";
-  $("hitBoard").style.display = m === "mc" ? "" : "none";
-  $("nextBtn").textContent = m === "mc" ? "Skip →" : "Next →";
-  $("footer").innerHTML = m === "mc"
-    ? "Tap the right word &middot; it moves on when you get it"
+  $("hitBoard").style.display = (m === "flash") ? "none" : "";
+  $("nextBtn").textContent = (m === "flash") ? "Next →" : "Skip →";
+  $("footer").innerHTML =
+    m === "mcpic" ? "Listen, then tap the matching picture &middot; it moves on when you get it"
+    : m === "mcword" ? "Tap the right word &middot; it moves on when you get it"
     : "Tap the card to flip it &middot; use the &larr; &rarr; keys or space bar to move on";
+  if (m === "mcpic") warmup();
   pos = 0; hits = 0;
   render();
   winOverlay.classList.remove("show");
@@ -474,6 +536,8 @@ function setStudy(m) {
 
 /* ---------- wiring ---------- */
 card.addEventListener("click", flip);
+$("saybackBtn").addEventListener("click", (e) => { e.stopPropagation(); warmup(); speakLatin(CARDS[order[pos]].la); });
+$("speakBtn").addEventListener("click", () => { warmup(); speakLatin(CARDS[order[pos]].la); });
 $("nextBtn").addEventListener("click", next);
 $("prevBtn").addEventListener("click", prev);
 $("shuffleBtn").addEventListener("click", () => { shuffle(order); pos = 0; hits = 0; render(); });
@@ -481,28 +545,21 @@ $("restartBtn").addEventListener("click", restart);
 $("playAgainBtn").addEventListener("click", () => { shuffle(order); restart(); });
 
 $("studyFlash").addEventListener("click", () => setStudy("flash"));
-$("studyMC").addEventListener("click", () => setStudy("mc"));
+$("studyWord").addEventListener("click", () => setStudy("mcword"));
+$("studyPic").addEventListener("click", () => setStudy("mcpic"));
 
-$("modePic").addEventListener("click", () => {
-  mode = "pic"; $("modePic").classList.add("active"); $("modeEn").classList.remove("active");
-  render();
-});
-$("modeEn").addEventListener("click", () => {
-  mode = "en"; $("modeEn").classList.add("active"); $("modePic").classList.remove("active");
-  render();
-});
+$("modePic").addEventListener("click", () => { mode = "pic"; $("modePic").classList.add("active"); $("modeEn").classList.remove("active"); render(); });
+$("modeEn").addEventListener("click", () => { mode = "en"; $("modeEn").classList.add("active"); $("modePic").classList.remove("active"); render(); });
 
 document.addEventListener("keydown", (e) => {
   if (winOverlay.classList.contains("show")) return;
-  if (study === "mc") {
+  if (study === "mcword" || study === "mcpic") {
     const i = ["1", "2", "3", "a", "b", "c"].indexOf(e.key.toLowerCase()) % 3;
-    if (i >= 0) { const b = $("mcChoices").children[i]; if (b) b.click(); return; }
-    if (e.code === "ArrowRight") next();
-    else if (e.code === "ArrowLeft") prev();
+    if (i >= 0) { const sel = study === "mcpic" ? "#picChoices .pchoice" : "#mcChoices .choice"; const b = document.querySelectorAll(sel)[i]; if (b) b.click(); return; }
+    if (e.code === "ArrowRight") next(); else if (e.code === "ArrowLeft") prev();
   } else {
     if (e.code === "Space" || e.code === "Enter") { e.preventDefault(); flip(); }
-    else if (e.code === "ArrowRight") next();
-    else if (e.code === "ArrowLeft") prev();
+    else if (e.code === "ArrowRight") next(); else if (e.code === "ArrowLeft") prev();
   }
 });
 
